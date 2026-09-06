@@ -1,0 +1,96 @@
+/* Luxury Design Tokens for SK TOURS & TRAVELS — SALEM */
+:root {
+  /* Color Palette */
+  --color-primary: #0b132b;
+  --color-primary-dark: #050b18;
+  --color-primary-light: #162447;
+  --color-primary-surface: #101d3f;
+
+  --color-gold: #d4af37;
+  --color-gold-light: #f3c64f;
+  --color-gold-dark: #b89123;
+  --color-gold-soft: rgba(212, 175, 55, 0.12);
+
+  --color-bg-base: #f8f9fc;
+  --color-bg-surface: #ffffff;
+  --color-bg-subtle: #f1f3f9;
+  --color-border: #e2e8f0;
+  --color-border-subtle: #edf2f7;
+
+  --color-text-main: #0f172a;
+  --color-text-muted: #64748b;
+  --color-text-light: #94a3b8;
+  --color-text-inverse: #ffffff;
+
+  --color-success: #10b981;
+  --color-warning: #f59e0b;
+  --color-danger: #ef4444;
+  --color-info: #3b82f6;
+
+  /* Typography */
+  --font-heading: 'Playfair Display', Georgia, serif;
+  --font-body: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+
+  /* Elevations & Shadows */
+  --shadow-sm: 0 2px 8px rgba(11, 19, 43, 0.04);
+  --shadow-md: 0 8px 24px rgba(11, 19, 43, 0.08);
+  --shadow-lg: 0 16px 40px rgba(11, 19, 43, 0.12);
+  --shadow-gold: 0 8px 25px rgba(212, 175, 55, 0.28);
+  --shadow-card-hover: 0 20px 48px rgba(11, 19, 43, 0.16);
+
+  /* Glassmorphism */
+  --glass-bg: rgba(255, 255, 255, 0.85);
+  --glass-dark-bg: rgba(11, 19, 43, 0.88);
+  --glass-border: rgba(255, 255, 255, 0.25);
+  --glass-blur: blur(16px);
+
+  /* Transitions */
+  --transition-fast: 200ms cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-smooth: 350ms cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-slow: 600ms cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* Radii */
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-xl: 28px;
+  --radius-pill: 9999px;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulseGold {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.4); }
+  50% { box-shadow: 0 0 0 14px rgba(212, 175, 55, 0); }
+}
+
+@keyframes floatElement {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.animate-fade-in {
+  animation: fadeIn var(--transition-smooth) forwards;
+}
+
+.animate-slide-up {
+  animation: slideUp var(--transition-smooth) forwards;
+}
+
+.animate-float {
+  animation: floatElement 4s ease-in-out infinite;
+}

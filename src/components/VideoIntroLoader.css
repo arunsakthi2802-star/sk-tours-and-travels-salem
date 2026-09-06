@@ -1,0 +1,237 @@
+/* ============================================================
+   100% PURE FULLSCREEN VIDEO INTRO (NO TIMERS, NO LINES)
+   SK TOURS & TRAVELS SALEM — Touch / Click or Auto-Enter
+   ============================================================ */
+
+.video-fullscreen-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 999999;
+  background: #000000;
+  overflow: hidden;
+  font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
+  color: #ffffff;
+  cursor: pointer;
+  transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1), transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.video-fullscreen-overlay.video-fade-out {
+  opacity: 0;
+  transform: scale(1.02);
+  pointer-events: none;
+}
+
+/* 100% Full Screen Video: Edge to edge without any borders */
+.video-fullscreen-player {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 1;
+  background: #000000;
+  pointer-events: none; /* Allows clicks to pass through to the overlay container */
+}
+
+/* Floating Header Bar */
+.fullscreen-header-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: 1.5rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 20;
+  box-sizing: border-box;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.7) 0%, transparent 100%);
+}
+
+.fullscreen-brand-pill {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  background: rgba(11, 19, 43, 0.7);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  padding: 0.4rem 1rem 0.4rem 0.5rem;
+  border-radius: 9999px;
+  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.5);
+  cursor: pointer;
+}
+
+.fullscreen-brand-logo {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  object-fit: contain;
+  background: #ffffff;
+  border: 1.5px solid #d4af37;
+  padding: 2px;
+}
+
+.fullscreen-brand-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.fullscreen-brand-title {
+  font-family: 'Cinzel', serif;
+  font-size: 0.95rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  color: #fef08a;
+  line-height: 1.2;
+}
+
+.fullscreen-brand-sub {
+  font-size: 0.65rem;
+  color: #cbd5e1;
+  letter-spacing: 0.12em;
+  font-weight: 600;
+}
+
+/* Action Group */
+.fullscreen-action-group {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.fullscreen-glass-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  background: rgba(15, 23, 42, 0.75);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  color: #f8fafc;
+  padding: 0.55rem 1rem;
+  border-radius: 9999px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.fullscreen-glass-btn:hover {
+  background: rgba(30, 41, 59, 0.9);
+  border-color: #d4af37;
+  color: #ffffff;
+}
+
+/* Enter Website Button */
+.fullscreen-enter-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: linear-gradient(135deg, #f59e0b 0%, #d4af37 50%, #b45309 100%);
+  color: #0b132b;
+  border: 1px solid rgba(254, 240, 138, 0.6);
+  padding: 0.6rem 1.35rem;
+  border-radius: 9999px;
+  font-size: 0.84rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  box-shadow: 0 0 24px rgba(212, 175, 55, 0.55);
+  transition: all 0.25s ease;
+  animation: pulseEnterGlow 2.5s infinite alternate;
+}
+
+@keyframes pulseEnterGlow {
+  0% { transform: scale(1); box-shadow: 0 0 16px rgba(212, 175, 55, 0.4); }
+  100% { transform: scale(1.04); box-shadow: 0 0 32px rgba(212, 175, 55, 0.85); }
+}
+
+.fullscreen-enter-btn:hover {
+  background: #ffffff;
+  color: #0b132b;
+  transform: translateY(-2px) scale(1.05);
+  box-shadow: 0 0 35px rgba(255, 255, 255, 0.95);
+}
+
+/* Touch Hint */
+.fullscreen-touch-hint {
+  position: absolute;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(11, 19, 43, 0.7);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  padding: 0.45rem 1.15rem;
+  border-radius: 9999px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #e2e8f0;
+  letter-spacing: 0.05em;
+  pointer-events: none;
+  z-index: 20;
+  animation: floatTouchHint 3s infinite ease-in-out alternate;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+}
+
+@keyframes floatTouchHint {
+  0% { transform: translate(-50%, 0); opacity: 0.8; }
+  100% { transform: translate(-50%, -6px); opacity: 1; }
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+  .fullscreen-header-bar {
+    padding: 1rem 1rem;
+  }
+
+  .fullscreen-brand-pill {
+    padding: 0.35rem 0.75rem 0.35rem 0.45rem;
+    gap: 0.5rem;
+  }
+
+  .fullscreen-brand-logo {
+    width: 32px;
+    height: 32px;
+  }
+
+  .fullscreen-brand-title {
+    font-size: 0.82rem;
+  }
+
+  .fullscreen-brand-sub {
+    font-size: 0.58rem;
+  }
+
+  .btn-text-desktop {
+    display: none;
+  }
+
+  .fullscreen-glass-btn {
+    padding: 0.5rem 0.65rem;
+  }
+
+  .fullscreen-enter-btn {
+    padding: 0.5rem 0.95rem;
+    font-size: 0.78rem;
+  }
+
+  .fullscreen-touch-hint {
+    bottom: 1.5rem;
+    font-size: 0.72rem;
+    padding: 0.35rem 0.85rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .fullscreen-brand-sub {
+    display: none;
+  }
+}
