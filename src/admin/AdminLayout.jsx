@@ -28,6 +28,13 @@ export default function AdminLayout({ children }) {
   const [mobileAdminMenuOpen, setMobileAdminMenuOpen] = useState(false);
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
 
+  const getInitials = (nameStr) => {
+    if (!nameStr) return 'SC';
+    const parts = nameStr.trim().split(/\s+/);
+    if (parts.length === 1) return parts[0].slice(0, 2).toUpperCase();
+    return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+  };
+
   const NAV_ITEMS = [
     { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
     { id: 'leads', label: 'CRM Leads & Pipeline', icon: Users, badge: null },
@@ -84,11 +91,30 @@ export default function AdminLayout({ children }) {
           alignItems: 'center',
           gap: '0.75rem'
         }}>
-          <img
-            src={currentStaff.avatar}
-            alt={currentStaff.name}
-            style={{ width: '42px', height: '42px', borderRadius: '50%', objectFit: 'cover', border: '2px solid var(--color-gold)' }}
-          />
+          {currentStaff.avatar ? (
+            <img
+              src={currentStaff.avatar}
+              alt={currentStaff.name}
+              style={{ width: '42px', height: '42px', borderRadius: '50%', objectFit: 'cover', border: '2px solid var(--color-gold)' }}
+            />
+          ) : (
+            <div style={{
+              width: '42px',
+              height: '42px',
+              borderRadius: '50%',
+              background: 'linear-gradient(135deg, #0b132b 0%, #162447 100%)',
+              border: '2px solid var(--color-gold)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              color: 'var(--color-gold)',
+              fontSize: '0.95rem',
+              fontWeight: 800,
+              flexShrink: 0
+            }}>
+              {getInitials(currentStaff.name)}
+            </div>
+          )}
           <div style={{ flexGrow: 1, minWidth: 0 }}>
             <div style={{ fontSize: '0.88rem', fontWeight: 700, color: '#ffffff', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
               {currentStaff.name}
@@ -404,11 +430,30 @@ export default function AdminLayout({ children }) {
               }}
               title="Edit Admin Name, Phone, Role, and Profile Photo"
             >
-              <img
-                src={currentStaff.avatar}
-                alt={currentStaff.name}
-                style={{ width: '22px', height: '22px', borderRadius: '50%', objectFit: 'cover' }}
-              />
+              {currentStaff.avatar ? (
+                <img
+                  src={currentStaff.avatar}
+                  alt={currentStaff.name}
+                  style={{ width: '22px', height: '22px', borderRadius: '50%', objectFit: 'cover' }}
+                />
+              ) : (
+                <div style={{
+                  width: '22px',
+                  height: '22px',
+                  borderRadius: '50%',
+                  background: 'var(--color-primary)',
+                  border: '1px solid var(--color-gold)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  color: 'var(--color-gold)',
+                  fontSize: '0.62rem',
+                  fontWeight: 800,
+                  flexShrink: 0
+                }}>
+                  {getInitials(currentStaff.name)}
+                </div>
+              )}
               <span className="admin-btn-text-desktop">Edit Profile</span>
               <Edit3 size={13} color="#d4af37" />
             </button>

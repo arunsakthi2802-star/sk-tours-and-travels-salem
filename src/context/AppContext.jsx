@@ -209,13 +209,13 @@ export function AppProvider({ children }) {
     id: 'admin-primary',
     username: 'sk@admin',
     password: 'sk@admin28',
-    name: 'Mr. S. Karthikeyan',
+    name: 'Sakthivel C',
     role: 'Super Admin',
     email: 'admin@sktours.com',
     phone: '+91 99946 44744',
-    avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=200&q=80',
+    avatar: '',
     branch: 'Salem HQ (Fairlands)',
-    bio: 'Managing luxury travel itineraries and operations at SK Tours & Travels Salem.'
+    bio: 'Executive Director of SK Tours & Travels Salem.'
   });
   const [notifications, setNotifications] = useState([]);
   const [loading, setLoading] = useState(true);

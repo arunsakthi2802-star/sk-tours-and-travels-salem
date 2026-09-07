@@ -402,7 +402,7 @@ export default function AdminTours() {
               <div className="form-grid-2">
                 <div className="form-group">
                   <label className="form-label">Tour Leader Name</label>
-                  <input type="text" name="tourLeader" defaultValue={editingTour.tourLeader || 'Mr. S. Karthikeyan (Salem Director)'} className="form-input" />
+                  <input type="text" name="tourLeader" defaultValue={editingTour.tourLeader || 'Sakthivel C (Director)'} className="form-input" />
                 </div>
                 <div className="form-group">
                   <label className="form-label">Hotel Rating</label>

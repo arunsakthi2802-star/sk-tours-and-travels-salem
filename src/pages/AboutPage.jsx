@@ -7,10 +7,10 @@ import {
 
 const TEAM = [
   {
-    name: "Mr. S. Karthikeyan",
+    name: "Mr. Sakthivel C",
     role: "Founder & Managing Director",
     exp: "16+ Years Travel Industry Experience",
-    bio: "Passionate about world exploration, Karthikeyan established SK Tours in Salem with a mission to bring world-class international travel experiences with authentic South Indian comfort.",
+    bio: "Passionate about world exploration, Sakthivel C established SK Tours in Salem with a mission to bring world-class international travel experiences with authentic South Indian comfort.",
     image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=400&q=80"
   },
   {

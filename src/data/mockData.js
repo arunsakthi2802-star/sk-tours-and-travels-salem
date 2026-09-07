@@ -1384,11 +1384,11 @@ export const INITIAL_FEEDBACK = [];
 export const INITIAL_STAFF = [
   {
     id: "staff-1",
-    name: "Admin",
+    name: "Sakthivel C",
     email: "sktoursandtravelsalem@gmail.com",
     role: "Super Admin",
     phone: "+91 99946 44744",
     activeLeads: 0,
-    avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=200&q=80"
+    avatar: ""
   }
 ];

@@ -337,7 +337,7 @@ export default function TravelAdviserPage() {
               Request A Free Itinerary Consultation
             </h2>
             <p style={{ color: '#cbd5e1', fontSize: '0.95rem', lineHeight: 1.7 }}>
-              Speak with Mr. Karthikeyan or our senior destination architects. We will analyze your dates, budget, flight options, and craft the best itinerary at zero extra cost.
+              Speak with Mr. Sakthivel C or our senior destination architects. We will analyze your dates, budget, flight options, and craft the best itinerary at zero extra cost.
             </p>
           </div>
 

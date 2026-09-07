@@ -85,11 +85,30 @@ export default function AdminStaff() {
             )}
 
             <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1rem' }}>
-              <img
-                src={member.avatar}
-                alt={member.name}
-                style={{ width: '54px', height: '54px', borderRadius: '50%', objectFit: 'cover', border: '2px solid var(--color-gold)' }}
-              />
+              {member.avatar ? (
+                <img
+                  src={member.avatar}
+                  alt={member.name}
+                  style={{ width: '54px', height: '54px', borderRadius: '50%', objectFit: 'cover', border: '2px solid var(--color-gold)' }}
+                />
+              ) : (
+                <div style={{
+                  width: '54px',
+                  height: '54px',
+                  borderRadius: '50%',
+                  background: 'linear-gradient(135deg, #0b132b 0%, #162447 100%)',
+                  border: '2px solid var(--color-gold)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  color: 'var(--color-gold)',
+                  fontSize: '1.2rem',
+                  fontWeight: 800,
+                  flexShrink: 0
+                }}>
+                  {member.name ? member.name.split(' ').map(w => w[0]).filter(Boolean).slice(0, 2).join('').toUpperCase() : 'SC'}
+                </div>
+              )}
               <div>
                 <h3 style={{ fontSize: '1.1rem', color: 'var(--color-primary)' }}>{member.name}</h3>
                 <span style={{
