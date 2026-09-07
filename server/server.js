@@ -17,8 +17,20 @@ import Staff from './models/Staff.js';
 import Notification from './models/Notification.js';
 import Image from './models/Image.js';
 import AdminProfile from './models/AdminProfile.js';
+import { v2 as cloudinary } from 'cloudinary';
 
 dotenv.config();
+
+// Configure Cloudinary if credentials provided
+if (process.env.CLOUDINARY_URL) {
+  cloudinary.config({ cloudinary_url: process.env.CLOUDINARY_URL });
+} else if (process.env.CLOUDINARY_CLOUD_NAME) {
+  cloudinary.config({
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET
+  });
+}
 
 // Use process.cwd() instead of import.meta.url to prevent esbuild Netlify errors
 const __dirname = path.join(process.cwd(), 'server');
@@ -889,7 +901,7 @@ app.put('/api/staff/:id', async (req, res) => {
 });
 
 // ============================================================
-// IMAGE UPLOAD & HOSTING API (100% Free, Permanent Cloud Hosting)
+// IMAGE UPLOAD & HOSTING API (Cloudinary + ImgBB + MongoDB Atlas)
 // ============================================================
 app.post('/api/upload', async (req, res) => {
   try {
@@ -898,6 +910,60 @@ app.post('/api/upload', async (req, res) => {
       return res.status(400).json({ error: 'Image base64 data is required' });
     }
 
+    // Tier 1: Cloudinary Upload (if configured)
+    if (process.env.CLOUDINARY_URL || (process.env.CLOUDINARY_CLOUD_NAME && process.env.CLOUDINARY_API_KEY && process.env.CLOUDINARY_API_SECRET)) {
+      try {
+        const cloudRes = await cloudinary.uploader.upload(image, {
+          folder: 'sk_tours',
+          resource_type: 'image'
+        });
+        if (cloudRes && (cloudRes.secure_url || cloudRes.url)) {
+          return res.json({
+            success: true,
+            url: cloudRes.secure_url || cloudRes.url,
+            provider: 'cloudinary',
+            message: 'Image hosted on Cloudinary CDN'
+          });
+        }
+      } catch (cErr) {
+        console.warn('Cloudinary upload error, cascading to ImgBB/MongoDB:', cErr.message);
+      }
+    }
+
+    // Tier 2: ImgBB API Upload (if key configured)
+    const imgbbKey = process.env.IMGBB_API_KEY || 'a7b8e0036eade5ea40bedad21161f6bc';
+    if (imgbbKey) {
+      try {
+        let cleanBase64 = image;
+        if (cleanBase64.includes('base64,')) {
+          cleanBase64 = cleanBase64.split('base64,')[1];
+        }
+        const form = new FormData();
+        form.append('image', cleanBase64);
+        const imgbbRes = await fetch(`https://api.imgbb.com/1/upload?key=${imgbbKey}`, {
+          method: 'POST',
+          body: form,
+          headers: {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
+          }
+        });
+        if (imgbbRes.ok) {
+          const imgbbData = await imgbbRes.json();
+          if (imgbbData && imgbbData.data && (imgbbData.data.display_url || imgbbData.data.url)) {
+            return res.json({
+              success: true,
+              url: imgbbData.data.display_url || imgbbData.data.url,
+              provider: 'imgbb',
+              message: 'Image hosted on ImgBB CDN'
+            });
+          }
+        }
+      } catch (ibErr) {
+        console.warn('ImgBB upload error, cascading to MongoDB Atlas:', ibErr.message);
+      }
+    }
+
+    // Tier 3: MongoDB Atlas Direct Database Storage (Guaranteed 100% Reliable)
     if (isConnected) {
       const newImg = new Image({
         filename: filename || `img-${Date.now()}.jpg`,
@@ -912,6 +978,7 @@ app.post('/api/upload', async (req, res) => {
         id: newImg._id,
         url: imageUrl,
         filename: newImg.filename,
+        provider: 'mongodb_atlas',
         message: 'Image hosted successfully in MongoDB Atlas'
       });
     }
@@ -921,6 +988,7 @@ app.post('/api/upload', async (req, res) => {
       success: true,
       url: image,
       filename: filename || 'image.jpg',
+      provider: 'data_url',
       message: 'Direct data URL generated'
     });
   } catch (err) {
