@@ -976,6 +976,10 @@ app.post('/api/reset-data', async (req, res) => {
   }
 });
 
-app.listen(PORT, () => {
-  console.log(`>>> SK Tours Express Server listening on http://localhost:${PORT}`);
-});
+export default app;
+
+if (process.env.NODE_ENV !== 'production' && process.env.NETLIFY !== 'true') {
+  app.listen(PORT, () => {
+    console.log(`>>> SK Tours Express Server listening on http://localhost:${PORT}`);
+  });
+}
