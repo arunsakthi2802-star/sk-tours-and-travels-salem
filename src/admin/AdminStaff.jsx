@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useApp } from '../context/AppContext';
-import { Shield, Users, Mail, Phone, Check, X } from 'lucide-react';
+import { Shield, Users, Mail, Phone, Check, X, Edit3 } from 'lucide-react';
+import AdminProfileModal from './AdminProfileModal';
 
 export default function AdminStaff() {
   const { staff, currentStaff, setCurrentStaff } = useApp();
+  const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
 
   const PERMISSIONS = [
     { module: 'View Dashboard & KPIs', superAdmin: true, manager: true, staff: true },
@@ -26,7 +28,9 @@ export default function AdminStaff() {
         border: '1px solid var(--color-border)',
         display: 'flex',
         justifyContent: 'space-between',
-        alignItems: 'center'
+        alignItems: 'center',
+        flexWrap: 'wrap',
+        gap: '1rem'
       }}>
         <div>
           <h2 style={{ fontSize: '1.3rem', color: 'var(--color-primary)' }}>
@@ -36,6 +40,14 @@ export default function AdminStaff() {
             Manage staff members, roles, lead allocations, and operational permissions
           </p>
         </div>
+        <button
+          className="btn btn-gold btn-sm"
+          onClick={() => setIsProfileModalOpen(true)}
+          style={{ display: 'flex', alignItems: 'center', gap: '6px' }}
+        >
+          <Edit3 size={15} />
+          <span>Edit My Profile</span>
+        </button>
       </div>
 
       {/* Staff Cards */}
@@ -155,6 +167,12 @@ export default function AdminStaff() {
           </table>
         </div>
       </div>
+
+      {/* Profile Edit Modal */}
+      <AdminProfileModal
+        isOpen={isProfileModalOpen}
+        onClose={() => setIsProfileModalOpen(false)}
+      />
     </div>
   );
 }

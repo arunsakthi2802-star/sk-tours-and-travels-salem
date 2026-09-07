@@ -2,8 +2,9 @@ import React, { useState } from 'react';
 import { useApp } from '../context/AppContext';
 import {
   Compass, LayoutDashboard, Users, MapPin, Package, MessageSquareText,
-  CalendarCheck, BarChart3, Shield, Globe, Bell, Check, LogOut, ChevronDown, Menu, X
+  CalendarCheck, BarChart3, Shield, Globe, Bell, Check, LogOut, ChevronDown, Menu, X, Edit3
 } from 'lucide-react';
+import AdminProfileModal from './AdminProfileModal';
 
 export default function AdminLayout({ children }) {
   const {
@@ -25,6 +26,7 @@ export default function AdminLayout({ children }) {
   const [showNotifications, setShowNotifications] = useState(false);
   const [showRoleMenu, setShowRoleMenu] = useState(false);
   const [mobileAdminMenuOpen, setMobileAdminMenuOpen] = useState(false);
+  const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
 
   const NAV_ITEMS = [
     { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
@@ -85,23 +87,45 @@ export default function AdminLayout({ children }) {
           <img
             src={currentStaff.avatar}
             alt={currentStaff.name}
-            style={{ width: '40px', height: '40px', borderRadius: '50%', objectFit: 'cover', border: '2px solid var(--color-gold)' }}
+            style={{ width: '42px', height: '42px', borderRadius: '50%', objectFit: 'cover', border: '2px solid var(--color-gold)' }}
           />
           <div style={{ flexGrow: 1, minWidth: 0 }}>
             <div style={{ fontSize: '0.88rem', fontWeight: 700, color: '#ffffff', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
               {currentStaff.name}
             </div>
-            <span style={{
-              fontSize: '0.68rem',
-              fontWeight: 700,
-              background: 'rgba(212, 175, 55, 0.2)',
-              color: 'var(--color-gold)',
-              padding: '0.15rem 0.5rem',
-              borderRadius: '9999px',
-              border: '1px solid rgba(212, 175, 55, 0.3)'
-            }}>
-              {currentStaff.role}
-            </span>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginTop: '2px' }}>
+              <span style={{
+                fontSize: '0.68rem',
+                fontWeight: 700,
+                background: 'rgba(212, 175, 55, 0.2)',
+                color: 'var(--color-gold)',
+                padding: '0.12rem 0.45rem',
+                borderRadius: '9999px',
+                border: '1px solid rgba(212, 175, 55, 0.3)'
+              }}>
+                {currentStaff.role}
+              </span>
+              <button
+                type="button"
+                onClick={() => setIsProfileModalOpen(true)}
+                title="Edit Profile Details & Photo"
+                style={{
+                  background: 'rgba(255,255,255,0.08)',
+                  border: '1px solid rgba(255,255,255,0.15)',
+                  color: 'var(--color-gold)',
+                  cursor: 'pointer',
+                  padding: '2px 5px',
+                  borderRadius: '4px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  fontSize: '0.68rem',
+                  gap: '3px'
+                }}
+              >
+                <Edit3 size={11} />
+                <span>Edit</span>
+              </button>
+            </div>
           </div>
         </div>
 
@@ -362,6 +386,33 @@ export default function AdminLayout({ children }) {
               )}
             </div>
 
+            {/* Edit Profile Button */}
+            <button
+              onClick={() => setIsProfileModalOpen(true)}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '0.45rem',
+                background: 'var(--color-bg-base)',
+                border: '1px solid var(--color-border)',
+                padding: '0.38rem 0.8rem',
+                borderRadius: 'var(--radius-pill)',
+                cursor: 'pointer',
+                fontSize: '0.82rem',
+                fontWeight: 600,
+                color: 'var(--color-primary)'
+              }}
+              title="Edit Admin Name, Phone, Role, and Profile Photo"
+            >
+              <img
+                src={currentStaff.avatar}
+                alt={currentStaff.name}
+                style={{ width: '22px', height: '22px', borderRadius: '50%', objectFit: 'cover' }}
+              />
+              <span className="admin-btn-text-desktop">Edit Profile</span>
+              <Edit3 size={13} color="#d4af37" />
+            </button>
+
             {/* Back to Site Button */}
             <button
               className="btn btn-navy btn-sm"
@@ -390,6 +441,12 @@ export default function AdminLayout({ children }) {
           {children}
         </main>
       </div>
+
+      {/* Admin Profile Edit Modal */}
+      <AdminProfileModal
+        isOpen={isProfileModalOpen}
+        onClose={() => setIsProfileModalOpen(false)}
+      />
     </div>
   );
 }

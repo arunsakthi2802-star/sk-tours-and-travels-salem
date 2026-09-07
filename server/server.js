@@ -15,6 +15,7 @@ import Customer from './models/Customer.js';
 import Feedback from './models/Feedback.js';
 import Staff from './models/Staff.js';
 import Notification from './models/Notification.js';
+import Image from './models/Image.js';
 
 dotenv.config();
 
@@ -53,7 +54,8 @@ app.use((req, res, next) => {
 });
 
 app.use(cors());
-app.use(express.json());
+app.use(express.json({ limit: '15mb' }));
+app.use(express.urlencoded({ extended: true, limit: '15mb' }));
 
 // Persistent Local Store (Ensures 100% zero downtime & immediate CRUD persistence)
 const DATA_DIR = path.join(__dirname, 'data');
@@ -846,6 +848,103 @@ app.post('/api/staff', async (req, res) => {
   } catch (err) {
     console.error('Error creating staff:', err);
     res.status(400).json({ error: err.message });
+  }
+});
+
+// UPDATE STAFF / ADMIN PROFILE
+app.put('/api/staff/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const updateData = { ...req.body, updatedAt: new Date() };
+    delete updateData._id;
+
+    // Update in localStore
+    const idx = localStore.staff.findIndex(s => s.id === id);
+    if (idx !== -1) {
+      localStore.staff[idx] = { ...localStore.staff[idx], ...updateData };
+      saveLocalStore();
+    } else {
+      localStore.staff.push({ id, ...updateData });
+      saveLocalStore();
+    }
+
+    if (isConnected) {
+      const updated = await Staff.findOneAndUpdate(
+        { id },
+        updateData,
+        { upsert: true, returnDocument: 'after' }
+      );
+      return res.json(updated);
+    }
+    res.json(localStore.staff[idx] || { id, ...updateData });
+  } catch (err) {
+    console.error('Error updating staff profile:', err);
+    res.status(400).json({ error: err.message });
+  }
+});
+
+// ============================================================
+// IMAGE UPLOAD & HOSTING API (100% Free, Permanent Cloud Hosting)
+// ============================================================
+app.post('/api/upload', async (req, res) => {
+  try {
+    const { image, filename, contentType } = req.body;
+    if (!image) {
+      return res.status(400).json({ error: 'Image base64 data is required' });
+    }
+
+    if (isConnected) {
+      const newImg = new Image({
+        filename: filename || `img-${Date.now()}.jpg`,
+        contentType: contentType || 'image/jpeg',
+        data: image,
+        size: image.length
+      });
+      await newImg.save();
+      const imageUrl = `/api/images/${newImg._id}`;
+      return res.json({
+        success: true,
+        id: newImg._id,
+        url: imageUrl,
+        filename: newImg.filename,
+        message: 'Image hosted successfully in MongoDB Atlas'
+      });
+    }
+
+    // Fallback if temporarily offline: return the dataUrl directly
+    res.json({
+      success: true,
+      url: image,
+      filename: filename || 'image.jpg',
+      message: 'Direct data URL generated'
+    });
+  } catch (err) {
+    console.error('Error uploading image:', err);
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// SERVE HOSTED IMAGES
+app.get('/api/images/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    if (isConnected) {
+      const img = await Image.findById(id);
+      if (img && img.data) {
+        let base64Data = img.data;
+        if (base64Data.includes('base64,')) {
+          base64Data = base64Data.split('base64,')[1];
+        }
+        const buffer = Buffer.from(base64Data, 'base64');
+        res.setHeader('Content-Type', img.contentType || 'image/jpeg');
+        res.setHeader('Content-Length', buffer.length);
+        res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
+        return res.end(buffer);
+      }
+    }
+    res.status(404).send('Image not found');
+  } catch (err) {
+    res.status(500).send('Error loading image: ' + err.message);
   }
 });
 

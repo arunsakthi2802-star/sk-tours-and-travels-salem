@@ -4,11 +4,23 @@ import {
   Plus, Edit, Trash2, Copy, Eye, EyeOff, Search, Star,
   Calendar, Check, X, Hotel, Plane, Clock, DollarSign
 } from 'lucide-react';
+import ImageUploadWidget from '../components/ImageUploadWidget';
 
 export default function AdminTours() {
   const { tours, addTour, updateTour, deleteTour, duplicateTour, togglePublishTour, setSelectedTour } = useApp();
   const [search, setSearch] = useState('');
   const [editingTour, setEditingTour] = useState(null); // tour object or 'new'
+  const [tourImageUrl, setTourImageUrl] = useState('');
+
+  const handleOpenNewTour = () => {
+    setTourImageUrl('');
+    setEditingTour({});
+  };
+
+  const handleOpenEditTour = (tour) => {
+    setTourImageUrl(tour.image || '');
+    setEditingTour(tour);
+  };
 
   const filteredTours = tours.filter(t =>
     t.name.toLowerCase().includes(search.toLowerCase()) ||
@@ -53,7 +65,7 @@ export default function AdminTours() {
       hotelStars: form.hotelStars.value,
       meals: form.meals.value,
       transport: form.transport.value,
-      image: form.image.value || (editingTour && editingTour.image) || "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=800&q=80",
+      image: tourImageUrl || form.image?.value || (editingTour && editingTour.image) || "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=800&q=80",
       shortDesc: form.shortDesc.value,
       description: form.shortDesc.value || (editingTour && editingTour.description) || form.overview.value || '',
       overview: form.overview.value,
@@ -110,7 +122,7 @@ export default function AdminTours() {
 
           <button
             className="btn btn-gold btn-sm"
-            onClick={() => setEditingTour({})}
+            onClick={handleOpenNewTour}
           >
             <Plus size={15} /> Add New Tour
           </button>
@@ -221,7 +233,7 @@ export default function AdminTours() {
                     {tour.published ? <EyeOff size={14} /> : <Eye size={14} />}
                   </button>
                   <button
-                    onClick={() => setEditingTour(tour)}
+                    onClick={() => handleOpenEditTour(tour)}
                     className="btn btn-outline-dark btn-sm"
                     style={{ padding: '0.35rem' }}
                     title="Edit Tour"
@@ -410,8 +422,12 @@ export default function AdminTours() {
               </div>
 
               <div className="form-group">
-                <label className="form-label">Hero Image URL</label>
-                <input type="text" name="image" defaultValue={editingTour.image || ''} className="form-input" placeholder="https://images.unsplash.com/..." />
+                <ImageUploadWidget
+                  label="Tour Hero Image (Upload File to URL / Paste)"
+                  value={tourImageUrl}
+                  onChange={setTourImageUrl}
+                  placeholder="Upload image file or paste image URL"
+                />
               </div>
 
               <div className="form-group">

@@ -825,6 +825,54 @@ export function AppProvider({ children }) {
     showToast("Review deleted", "info");
   };
 
+  // Update Staff / Admin Profile
+  const updateStaffProfile = async (updatedStaff) => {
+    const { _id, ...cleanStaff } = updatedStaff;
+    setStaff(prev => prev.map(s => s.id === cleanStaff.id ? { ...s, ...cleanStaff } : s));
+    if (currentStaff && currentStaff.id === cleanStaff.id) {
+      setCurrentStaff(prev => ({ ...prev, ...cleanStaff }));
+    }
+
+    try {
+      const res = await fetch(`/api/staff/${cleanStaff.id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(cleanStaff)
+      });
+      if (res.ok) {
+        showToast("Admin profile updated successfully!");
+        return true;
+      }
+    } catch (err) {
+      console.error('Failed to update staff profile:', err);
+      showToast("Profile saved locally, connection error to database", "warning");
+    }
+    return true;
+  };
+
+  // Upload Image to MongoDB Atlas / Server
+  const uploadImage = async (base64Data, filename = 'image.jpg') => {
+    try {
+      const res = await fetch('/api/upload', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          image: base64Data,
+          filename,
+          contentType: base64Data.startsWith('data:image/png') ? 'image/png' : 'image/jpeg'
+        })
+      });
+      if (res.ok) {
+        const data = await res.json();
+        return data.url;
+      }
+    } catch (err) {
+      console.error('Upload error:', err);
+    }
+    // Fallback: return direct base64 dataUrl if upload endpoint unavailable
+    return base64Data;
+  };
+
   return (
     <AppContext.Provider
       value={{
@@ -888,6 +936,8 @@ export function AppProvider({ children }) {
         deleteFeedback,
         toggleFeatureFeedback,
         getWhatsAppLink,
+        updateStaffProfile,
+        uploadImage,
         dbStatus,
         fetchAllData,
         loading,
