@@ -49,10 +49,7 @@ export function AppProvider({ children }) {
 
   // Dynamic Airplane Around the World Intro Animation Loader
   const [showIntroLoader, setShowIntroLoader] = useState(() => {
-    if (typeof window !== 'undefined' && window.location.pathname.startsWith('/admin')) {
-      return false;
-    }
-    return true;
+    return false; // Disabled by default to prevent video lag and improve performance
   });
 
   const replayIntroLoader = useCallback(() => {
@@ -184,9 +181,9 @@ export function AppProvider({ children }) {
   };
 
   // Fetch all collections from MongoDB API
-  const fetchAllData = useCallback(async () => {
+  const fetchAllData = useCallback(async (isBackground = false) => {
     try {
-      setLoading(true);
+      if (!isBackground) setLoading(true);
       // Health check
       const healthRes = await fetch('/api/health').catch(() => null);
       if (healthRes && healthRes.ok) {
@@ -241,12 +238,17 @@ export function AppProvider({ children }) {
       console.error('Error fetching data from MongoDB:', err);
       setDbStatus('offline');
     } finally {
-      setLoading(false);
+      if (!isBackground) setLoading(false);
     }
   }, []);
 
   useEffect(() => {
     fetchAllData();
+    // Auto connect / polling to MongoDB to keep data live on admin and web page
+    const interval = setInterval(() => {
+      fetchAllData(true);
+    }, 15000);
+    return () => clearInterval(interval);
   }, [fetchAllData]);
 
   // Trigger celebratory confetti on conversion
