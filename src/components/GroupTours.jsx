@@ -114,16 +114,7 @@ export default function GroupTours() {
                   </h3>
 
                   {/* Group Details Metadata Box */}
-                  <div style={{
-                    background: 'var(--color-bg-base)',
-                    borderRadius: 'var(--radius-md)',
-                    padding: '0.85rem',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    gap: '0.45rem',
-                    fontSize: '0.82rem',
-                    margin: '0.5rem 0 1rem 0'
-                  }}>
+                  <div className="group-tour-meta-box">
                     <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: 'var(--color-text-main)' }}>
                       <Calendar size={14} color="#d4af37" />
                       <span><strong>Departure:</strong> {tour.availableDates ? tour.availableDates[0] : (tour.departures?.[0] || 'On Request')}</span>

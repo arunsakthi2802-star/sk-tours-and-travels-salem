@@ -163,7 +163,7 @@ export default function ContactPage() {
                 </div>
               ) : (
                 <form onSubmit={handleSubmit} className="contact-actual-form">
-                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+                  <div className="form-grid-2">
                     <div>
                       <label>Your Name *</label>
                       <input
@@ -186,7 +186,7 @@ export default function ContactPage() {
                     </div>
                   </div>
 
-                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+                  <div className="form-grid-2">
                     <div>
                       <label>Email Address</label>
                       <input
@@ -207,7 +207,7 @@ export default function ContactPage() {
                     </div>
                   </div>
 
-                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+                  <div className="form-grid-2">
                     <div>
                       <label>Approximate Travel Date</label>
                       <input

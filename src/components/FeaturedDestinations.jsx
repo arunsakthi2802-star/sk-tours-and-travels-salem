@@ -63,7 +63,7 @@ export default function FeaturedDestinations() {
                     {dest.country || 'Destination'}
                   </div>
                   <h3 className="destination-name font-serif">{dest.name}</h3>
-                  <p style={{ fontSize: '0.82rem', color: '#cbd5e1', marginBottom: '0.75rem', lineHeight: 1.4 }}>
+                  <p className="destination-desc">
                     {dest.tagline || dest.description}
                   </p>
 

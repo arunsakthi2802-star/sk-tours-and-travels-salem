@@ -351,7 +351,7 @@ export default function TravelAdviserPage() {
             </div>
           ) : (
             <form onSubmit={handleConsultSubmit} className="adviser-consult-form">
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+              <div className="form-grid-2">
                 <div>
                   <label>Your Full Name</label>
                   <input
