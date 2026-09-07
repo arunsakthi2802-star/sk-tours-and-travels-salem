@@ -17,3 +17,22 @@
   from = "/*"
   to = "/index.html"
   status = 200
+
+# ============================================================
+# DOMAIN SECURITY & HTTPS HEADERS
+# ============================================================
+[[headers]]
+  for = "/*"
+  [headers.values]
+    # Enforce HTTPS across all subdomains and enable HSTS preload
+    Strict-Transport-Security = "max-age=31536000; includeSubDomains; preload"
+    # Prevent MIME-type sniffing
+    X-Content-Type-Options = "nosniff"
+    # Prevent Clickjacking by restricting framing to same origin
+    X-Frame-Options = "SAMEORIGIN"
+    # Cross-site scripting (XSS) filter
+    X-XSS-Protection = "1; mode=block"
+    # Privacy protection for referrers
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    # Restrict device sensor & API access
+    Permissions-Policy = "camera=(), microphone=(), geolocation=(self), payment=(self)"

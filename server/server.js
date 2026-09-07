@@ -32,6 +32,19 @@ try {
 const app = express();
 const PORT = process.env.PORT || 5000;
 
+// Domain & API Security: Hide framework fingerprint
+app.disable('x-powered-by');
+
+// Security headers for API
+app.use((req, res, next) => {
+  res.setHeader('X-Content-Type-Options', 'nosniff');
+  res.setHeader('X-Frame-Options', 'SAMEORIGIN');
+  res.setHeader('X-XSS-Protection', '1; mode=block');
+  res.setHeader('Strict-Transport-Security', 'max-age=31536000; includeSubDomains; preload');
+  res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
+  next();
+});
+
 app.use(cors());
 app.use(express.json());
 
