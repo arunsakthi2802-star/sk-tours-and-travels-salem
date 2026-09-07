@@ -8,8 +8,8 @@
       "durationDays": 5,
       "durationNights": 4,
       "destination": "Srinagar & Kashmir Valley",
-      "category": "International",
-      "price": 7599,
+      "category": "Kashmir",
+      "price": 7600,
       "offerPrice": 9200,
       "rating": 5,
       "reviewsCount": 38,
@@ -162,19 +162,7 @@
         }
       ],
       "published": true,
-      "featured": true,
-      "country": "",
-      "subCategory": "Premium Group Tours",
-      "tourType": "group",
-      "originalPrice": 55000,
-      "isPremium": false,
-      "isFeatured": true,
-      "availableSeats": 10,
-      "maxTravellers": 25,
-      "meals": "Breakfast & Dinners Included (South Indian Available)",
-      "shortDesc": "",
-      "highlights": [],
-      "updatedAt": "2026-09-07T04:53:39.402Z"
+      "featured": true
     },
     {
       "id": "tour-kashmir-5n6d",
@@ -184,8 +172,8 @@
       "durationDays": 6,
       "durationNights": 5,
       "destination": "Jammu to Srinagar Circuit",
-      "category": "International",
-      "price": 9599,
+      "category": "Kashmir",
+      "price": 9600,
       "offerPrice": 11700,
       "rating": 4.9,
       "reviewsCount": 29,
@@ -315,19 +303,7 @@
         }
       ],
       "published": true,
-      "featured": false,
-      "country": "",
-      "subCategory": "Premium Group Tours",
-      "tourType": "group",
-      "originalPrice": 55000,
-      "isPremium": false,
-      "isFeatured": true,
-      "availableSeats": 10,
-      "maxTravellers": 25,
-      "meals": "Breakfast & Dinners Included (South Indian Available)",
-      "shortDesc": "",
-      "highlights": [],
-      "updatedAt": "2026-09-07T04:55:28.155Z"
+      "featured": false
     },
     {
       "id": "tour-kashmir-gurez-6n7d",
@@ -337,8 +313,8 @@
       "durationDays": 7,
       "durationNights": 6,
       "destination": "Gurez Valley, Srinagar, Gulmarg & Pahalgam",
-      "category": "International",
-      "price": 13199,
+      "category": "Kashmir",
+      "price": 13200,
       "offerPrice": 15800,
       "rating": 5,
       "reviewsCount": 22,
@@ -479,19 +455,155 @@
         }
       ],
       "published": true,
-      "featured": true,
-      "country": "",
-      "subCategory": "Premium Group Tours",
-      "tourType": "group",
-      "originalPrice": 55000,
-      "isPremium": false,
-      "isFeatured": false,
-      "availableSeats": 10,
-      "maxTravellers": 25,
-      "meals": "Breakfast & Dinners Included (South Indian Available)",
-      "shortDesc": "",
-      "highlights": [],
-      "updatedAt": "2026-09-07T04:56:05.760Z"
+      "featured": true
+    },
+    {
+      "id": "tour-beyond-kashmir-4n5d",
+      "name": "Beyond Kashmir – Hidden Valleys & Alpine Treks",
+      "slug": "beyond-kashmir-hidden-valleys-4n-5d",
+      "duration": "4 Nights / 5 Days",
+      "durationDays": 5,
+      "durationNights": 4,
+      "destination": "Naranag, Domail & Sonamarg",
+      "category": "Kashmir",
+      "price": 11500,
+      "offerPrice": 13200,
+      "rating": 5,
+      "reviewsCount": 24,
+      "image": "https://images.unsplash.com/photo-1598091383021-15ddea10925d?auto=format&fit=crop&w=1200&q=80",
+      "gallery": [
+        "https://images.unsplash.com/photo-1598091383021-15ddea10925d?auto=format&fit=crop&w=600&q=80",
+        "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80",
+        "https://images.unsplash.com/photo-1548013146-72479768bada?auto=format&fit=crop&w=600&q=80"
+      ],
+      "description": "A journey beyond the usual tourist routes of Kashmir, exploring hidden valleys, alpine landscapes, village stays in Naranag, and peaceful Himalayan experiences.",
+      "overview": "Step away from crowded tourist tracks to experience the untouched wilderness of Kashmir. Highlights include traditional village homestay in historic Naranag, alpine stream trek to Domail and Marchoi, lakeside/riverside camping with bonfires, and Dal Lake Shikara ride.",
+      "tourLeader": "Mr. Sakthivel (Salem Tour Director)",
+      "hotelStars": "Charming Himalayan Homestay & Riverside Campsite",
+      "transport": "Private Vehicle (Jammu to Jammu Entire Tour)",
+      "itinerary": [
+        {
+          "day": 1,
+          "title": "Arrival in Jammu & Scenic Drive to Srinagar",
+          "desc": "Arrival at Jammu followed by a scenic drive to Srinagar through the beautiful mountain roads of Kashmir. Upon arrival, check in to the hotel and relax before exploring nearby local areas and enjoying the peaceful atmosphere of Srinagar. Overnight stay in Srinagar.",
+          "hotel": "Srinagar Deluxe Hotel",
+          "meals": "Dinner Included",
+          "activities": [
+            "Scenic Mountain Drive",
+            "Local Market Stroll",
+            "Srinagar Arrival"
+          ]
+        },
+        {
+          "day": 2,
+          "title": "Srinagar to Naranag Heritage Village",
+          "desc": "After breakfast, proceed towards the beautiful Naranag Valley with en-route sightseeing at Ganderbal. Naranag is a peaceful Himalayan village surrounded by forests and mountains, known for its hidden trekking routes, 8th-century temple ruins, and untouched natural beauty. Upon arrival, check in to the homestay and spend the evening exploring the village surroundings. Overnight stay in Naranag.",
+          "hotel": "Traditional Naranag Himalayan Homestay",
+          "meals": "Breakfast & Dinner Included",
+          "activities": [
+            "Ganderbal Viewpoint",
+            "Naranag Ancient Temple Ruins",
+            "Village Exploration"
+          ]
+        },
+        {
+          "day": 3,
+          "title": "Trek to Domail & Riverside Camping / Marchoi Valley",
+          "desc": "After breakfast, enjoy a short trek to Domail, a scenic meadow where two mountain streams meet amidst breathtaking Himalayan landscapes. Guests can also opt for an extended trek to Marchoi, an untouched alpine valley famous for its rivers, meadows, and raw mountain beauty. Later enjoy a peaceful riverside camping experience with dinner and overnight stay.",
+          "hotel": "Scenic Alpine Riverside Camp",
+          "meals": "Breakfast & Camp Dinner Included",
+          "activities": [
+            "Domail Stream Confluence Trek",
+            "Marchoi Alpine Exploration",
+            "Riverside Campfire"
+          ]
+        },
+        {
+          "day": 4,
+          "title": "Sonamarg Meadow of Gold & Astanmarg Bonfire",
+          "desc": "After breakfast, transfer to Sonamarg, popularly known as the Meadow of Gold, famous for its glaciers, alpine scenery, and breathtaking mountain landscapes. Explore the surrounding valleys and later check in to the Astanmarg homestay. Enjoy an evening bonfire and jam session followed by dinner and overnight stay.",
+          "hotel": "Astanmarg Scenic Homestay",
+          "meals": "Breakfast & Dinner Included",
+          "activities": [
+            "Sonamarg Glacier Exploration",
+            "Astanmarg Valley View",
+            "Bonfire & Music Session"
+          ]
+        },
+        {
+          "day": 5,
+          "title": "Dal Lake Shikara Experience & Jammu Departure",
+          "desc": "After breakfast, enjoy a traditional Shikara ride on Dal Lake while admiring the floating markets, houseboats, and mountain views. Later proceed towards Jammu for your return journey with unforgettable memories of Kashmir.",
+          "hotel": "Departure Transit",
+          "meals": "Breakfast Included",
+          "activities": [
+            "Dal Lake Shikara Ride",
+            "Floating Gardens",
+            "Transfer to Jammu"
+          ]
+        }
+      ],
+      "inclusions": [
+        "Accommodation in authentic homestay / riverside camp for 4 nights",
+        "Daily breakfast & dinner",
+        "Transportation for the entire trip (Jammu to Jammu)",
+        "Guided trek experience to Domail confluence",
+        "Riverside camping experience",
+        "Evening bonfire & musical jam session",
+        "Traditional Shikara ride at Dal Lake",
+        "Driver allowance, tolls, fuel and parking charges"
+      ],
+      "exclusions": [
+        "Flights or train tickets to Jammu",
+        "Personal expenses (laundry, telephone, tips)",
+        "Lunch during travel days",
+        "Entry tickets & local camera permits if applicable",
+        "Any activities not specifically mentioned in the itinerary"
+      ],
+      "pricingTable": [
+        {
+          "pax": "2 Pax",
+          "vehicle": "1 Room, Sedan",
+          "offSeason": "₹14,500",
+          "inSeason": "₹16,500",
+          "deluxe": "₹18,500",
+          "superDeluxe": "₹21,500"
+        },
+        {
+          "pax": "4 Pax",
+          "vehicle": "2 Rooms, Sedan",
+          "offSeason": "₹12,800",
+          "inSeason": "₹14,200",
+          "deluxe": "₹16,000",
+          "superDeluxe": "₹18,500"
+        },
+        {
+          "pax": "6 Pax",
+          "vehicle": "3 Rooms, XUV",
+          "offSeason": "₹11,500",
+          "inSeason": "₹13,200",
+          "deluxe": "₹14,800",
+          "superDeluxe": "₹17,200"
+        },
+        {
+          "pax": "8 Pax",
+          "vehicle": "4 Rooms, Tempo",
+          "offSeason": "₹10,800",
+          "inSeason": "₹12,500",
+          "deluxe": "₹13,900",
+          "superDeluxe": "₹16,400"
+        },
+        {
+          "pax": "10 Pax",
+          "vehicle": "5 Rooms, Tempo",
+          "offSeason": "₹9,800",
+          "inSeason": "₹11,500",
+          "deluxe": "₹12,800",
+          "superDeluxe": "₹15,200"
+        }
+      ],
+      "published": true,
+      "featured": true
     },
     {
       "id": "tour-manali-kasol-4n5d",
@@ -501,8 +613,8 @@
       "durationDays": 5,
       "durationNights": 4,
       "destination": "Manali, Kasol & Parvati Valley",
-      "category": "International",
-      "price": 4999,
+      "category": "Himachal",
+      "price": 5000,
       "offerPrice": 6500,
       "rating": 4.9,
       "reviewsCount": 45,
@@ -623,19 +735,7 @@
         }
       ],
       "published": true,
-      "featured": true,
-      "country": "",
-      "subCategory": "Premium Group Tours",
-      "tourType": "group",
-      "originalPrice": 55000,
-      "isPremium": false,
-      "isFeatured": false,
-      "availableSeats": 10,
-      "maxTravellers": 25,
-      "meals": "Breakfast & Dinners Included (South Indian Available)",
-      "shortDesc": "",
-      "highlights": [],
-      "updatedAt": "2026-09-07T04:56:31.900Z"
+      "featured": true
     },
     {
       "id": "tour-manali-kasol-5n6d",
@@ -645,8 +745,8 @@
       "durationDays": 6,
       "durationNights": 5,
       "destination": "Manali, Solang, Atal Tunnel & Kasol",
-      "category": "International",
-      "price": 7799,
+      "category": "Himachal",
+      "price": 7800,
       "offerPrice": 9500,
       "rating": 5,
       "reviewsCount": 31,
@@ -776,19 +876,7 @@
         }
       ],
       "published": true,
-      "featured": false,
-      "country": "",
-      "subCategory": "Premium Group Tours",
-      "tourType": "group",
-      "originalPrice": 55000,
-      "isPremium": false,
-      "isFeatured": false,
-      "availableSeats": 10,
-      "maxTravellers": 25,
-      "meals": "Breakfast & Dinners Included (South Indian Available)",
-      "shortDesc": "",
-      "highlights": [],
-      "updatedAt": "2026-09-07T04:56:45.601Z"
+      "featured": false
     },
     {
       "id": "tour-delhi-agra-2n3d",
@@ -798,8 +886,8 @@
       "durationDays": 3,
       "durationNights": 2,
       "destination": "Delhi & Taj Mahal, Agra",
-      "category": "International",
-      "price": 7199,
+      "category": "Delhi & Agra",
+      "price": 7200,
       "offerPrice": 8500,
       "rating": 4.8,
       "reviewsCount": 34,
@@ -903,19 +991,7 @@
         }
       ],
       "published": true,
-      "featured": false,
-      "country": "",
-      "subCategory": "Premium Group Tours",
-      "tourType": "group",
-      "originalPrice": 55000,
-      "isPremium": false,
-      "isFeatured": false,
-      "availableSeats": 10,
-      "maxTravellers": 25,
-      "meals": "Breakfast & Dinners Included (South Indian Available)",
-      "shortDesc": "",
-      "highlights": [],
-      "updatedAt": "2026-09-07T04:57:00.086Z"
+      "featured": false
     },
     {
       "id": "tour-delhi-agra-3n4d",
@@ -925,8 +1001,8 @@
       "durationDays": 4,
       "durationNights": 3,
       "destination": "Delhi & Agra",
-      "category": "International",
-      "price": 8999,
+      "category": "Delhi & Agra",
+      "price": 9100,
       "offerPrice": 10600,
       "rating": 4.9,
       "reviewsCount": 27,
@@ -1039,19 +1115,7 @@
         }
       ],
       "published": true,
-      "featured": false,
-      "country": "",
-      "subCategory": "Premium Group Tours",
-      "tourType": "group",
-      "originalPrice": 55000,
-      "isPremium": false,
-      "isFeatured": false,
-      "availableSeats": 10,
-      "maxTravellers": 25,
-      "meals": "Breakfast & Dinners Included (South Indian Available)",
-      "shortDesc": "",
-      "highlights": [],
-      "updatedAt": "2026-09-07T04:57:59.157Z"
+      "featured": false
     },
     {
       "id": "tour-rajasthan-jaisalmer-4n5d",
@@ -1061,8 +1125,8 @@
       "durationDays": 5,
       "durationNights": 4,
       "destination": "Jaipur, Jodhpur & Jaisalmer Sam Dunes",
-      "category": "International",
-      "price": 14799,
+      "category": "Rajasthan",
+      "price": 14800,
       "offerPrice": 17300,
       "rating": 5,
       "reviewsCount": 52,
@@ -1178,19 +1242,7 @@
         }
       ],
       "published": true,
-      "featured": true,
-      "country": "",
-      "subCategory": "Premium Group Tours",
-      "tourType": "group",
-      "originalPrice": 55000,
-      "isPremium": false,
-      "isFeatured": false,
-      "availableSeats": 10,
-      "maxTravellers": 25,
-      "meals": "Breakfast & Dinners Included (South Indian Available)",
-      "shortDesc": "",
-      "highlights": [],
-      "updatedAt": "2026-09-07T04:58:19.709Z"
+      "featured": true
     },
     {
       "id": "tour-rajasthan-udaipur-4n5d",
@@ -1200,8 +1252,8 @@
       "durationDays": 5,
       "durationNights": 4,
       "destination": "Jaipur, Jodhpur & Udaipur",
-      "category": "International",
-      "price": 14999,
+      "category": "Rajasthan",
+      "price": 15000,
       "offerPrice": 17500,
       "rating": 4.9,
       "reviewsCount": 39,
@@ -1312,19 +1364,7 @@
         }
       ],
       "published": true,
-      "featured": false,
-      "country": "",
-      "subCategory": "Premium Group Tours",
-      "tourType": "group",
-      "originalPrice": 55000,
-      "isPremium": false,
-      "isFeatured": false,
-      "availableSeats": 10,
-      "maxTravellers": 25,
-      "meals": "Breakfast & Dinners Included (South Indian Available)",
-      "shortDesc": "",
-      "highlights": [],
-      "updatedAt": "2026-09-07T04:58:47.549Z"
+      "featured": false
     },
     {
       "id": "tour-rajasthan-grand-6n7d",
@@ -1334,8 +1374,8 @@
       "durationDays": 7,
       "durationNights": 6,
       "destination": "Jaipur, Jodhpur, Jaisalmer & Udaipur",
-      "category": "International",
-      "price": 19899,
+      "category": "Rajasthan",
+      "price": 19900,
       "offerPrice": 22500,
       "rating": 5,
       "reviewsCount": 61,
@@ -1468,19 +1508,7 @@
         }
       ],
       "published": true,
-      "featured": true,
-      "country": "",
-      "subCategory": "Premium Group Tours",
-      "tourType": "group",
-      "originalPrice": 55000,
-      "isPremium": false,
-      "isFeatured": false,
-      "availableSeats": 10,
-      "maxTravellers": 25,
-      "meals": "Breakfast & Dinners Included (South Indian Available)",
-      "shortDesc": "",
-      "highlights": [],
-      "updatedAt": "2026-09-07T04:59:01.328Z"
+      "featured": true
     },
     {
       "id": "tour-ladakh-pangong-4n5d",
@@ -1490,8 +1518,8 @@
       "durationDays": 5,
       "durationNights": 4,
       "destination": "Leh, Hall of Fame & Pangong Lake",
-      "category": "International",
-      "price": 12499,
+      "category": "Leh-Ladakh",
+      "price": 12500,
       "offerPrice": 15000,
       "rating": 5,
       "reviewsCount": 36,
@@ -1604,19 +1632,7 @@
         }
       ],
       "published": true,
-      "featured": true,
-      "country": "",
-      "subCategory": "Premium Group Tours",
-      "tourType": "group",
-      "originalPrice": 55000,
-      "isPremium": false,
-      "isFeatured": false,
-      "availableSeats": 10,
-      "maxTravellers": 25,
-      "meals": "Breakfast & Dinners Included (South Indian Available)",
-      "shortDesc": "",
-      "highlights": [],
-      "updatedAt": "2026-09-07T04:59:17.213Z"
+      "featured": true
     },
     {
       "id": "tour-ladakh-nubra-5n6d",
@@ -1626,8 +1642,8 @@
       "durationDays": 6,
       "durationNights": 5,
       "destination": "Leh, Khardung La, Nubra Valley & Pangong Lake",
-      "category": "International",
-      "price": 16999,
+      "category": "Leh-Ladakh",
+      "price": 17000,
       "offerPrice": 19600,
       "rating": 5,
       "reviewsCount": 48,
@@ -1749,19 +1765,7 @@
         }
       ],
       "published": true,
-      "featured": true,
-      "country": "",
-      "subCategory": "Premium Group Tours",
-      "tourType": "group",
-      "originalPrice": 55000,
-      "isPremium": false,
-      "isFeatured": false,
-      "availableSeats": 10,
-      "maxTravellers": 25,
-      "meals": "Breakfast & Dinners Included (South Indian Available)",
-      "shortDesc": "",
-      "highlights": [],
-      "updatedAt": "2026-09-07T04:59:34.710Z"
+      "featured": true
     },
     {
       "id": "tour-wayanad-2n3d",
@@ -1771,8 +1775,8 @@
       "durationDays": 3,
       "durationNights": 2,
       "destination": "Wayanad, Kerala (Ex-Kozhikode)",
-      "category": "International",
-      "price": 5899,
+      "category": "Kerala",
+      "price": 5900,
       "offerPrice": 7000,
       "rating": 4.8,
       "reviewsCount": 33,
@@ -1869,19 +1873,7 @@
         }
       ],
       "published": true,
-      "featured": false,
-      "country": "",
-      "subCategory": "Premium Group Tours",
-      "tourType": "group",
-      "originalPrice": 55000,
-      "isPremium": false,
-      "isFeatured": false,
-      "availableSeats": 10,
-      "maxTravellers": 25,
-      "meals": "Breakfast & Dinners Included (South Indian Available)",
-      "shortDesc": "",
-      "highlights": [],
-      "updatedAt": "2026-09-07T04:59:52.028Z"
+      "featured": false
     },
     {
       "id": "tour-munnar-2n3d",
@@ -1891,8 +1883,8 @@
       "durationDays": 3,
       "durationNights": 2,
       "destination": "Munnar, Kerala (Ex-Kochi)",
-      "category": "International",
-      "price": 5899,
+      "category": "Kerala",
+      "price": 5900,
       "offerPrice": 7000,
       "rating": 4.9,
       "reviewsCount": 42,
@@ -1990,19 +1982,7 @@
         }
       ],
       "published": true,
-      "featured": false,
-      "country": "",
-      "subCategory": "Premium Group Tours",
-      "tourType": "group",
-      "originalPrice": 55000,
-      "isPremium": false,
-      "isFeatured": false,
-      "availableSeats": 10,
-      "maxTravellers": 25,
-      "meals": "Breakfast & Dinners Included (South Indian Available)",
-      "shortDesc": "",
-      "highlights": [],
-      "updatedAt": "2026-09-07T05:00:33.946Z"
+      "featured": false
     },
     {
       "id": "tour-munnar-thekkady-3n4d",
@@ -2012,8 +1992,8 @@
       "durationDays": 4,
       "durationNights": 3,
       "destination": "Munnar & Thekkady (Periyar)",
-      "category": "International",
-      "price": 7299,
+      "category": "Kerala",
+      "price": 7300,
       "offerPrice": 8900,
       "rating": 4.9,
       "reviewsCount": 37,
@@ -2121,19 +2101,7 @@
         }
       ],
       "published": true,
-      "featured": false,
-      "country": "",
-      "subCategory": "Premium Group Tours",
-      "tourType": "group",
-      "originalPrice": 55000,
-      "isPremium": false,
-      "isFeatured": false,
-      "availableSeats": 10,
-      "maxTravellers": 25,
-      "meals": "Breakfast & Dinners Included (South Indian Available)",
-      "shortDesc": "",
-      "highlights": [],
-      "updatedAt": "2026-09-07T05:00:46.582Z"
+      "featured": false
     },
     {
       "id": "tour-munnar-alleppey-4n5d",
@@ -2143,8 +2111,8 @@
       "durationDays": 5,
       "durationNights": 4,
       "destination": "Munnar, Thekkady & Alleppey",
-      "category": "International",
-      "price": 8499,
+      "category": "Kerala",
+      "price": 8500,
       "offerPrice": 10700,
       "rating": 5,
       "reviewsCount": 56,
@@ -2263,19 +2231,7 @@
         }
       ],
       "published": true,
-      "featured": true,
-      "country": "",
-      "subCategory": "Premium Group Tours",
-      "tourType": "group",
-      "originalPrice": 55000,
-      "isPremium": false,
-      "isFeatured": false,
-      "availableSeats": 10,
-      "maxTravellers": 25,
-      "meals": "Breakfast & Dinners Included (South Indian Available)",
-      "shortDesc": "",
-      "highlights": [],
-      "updatedAt": "2026-09-07T05:01:00.847Z"
+      "featured": true
     },
     {
       "id": "tour-south-india-10n11d",
@@ -2790,8 +2746,8 @@
       "durationDays": 5,
       "durationNights": 4,
       "destination": "Shillong, Cherrapunji & Mawlyngbna",
-      "category": "International",
-      "price": 12399,
+      "category": "Meghalaya",
+      "price": 12400,
       "offerPrice": 15200,
       "rating": 5,
       "reviewsCount": 28,
@@ -2809,9 +2765,8 @@
           "day": 1,
           "title": "Guwahati to Cherrapunji",
           "desc": "Pickup from Guwahati Airport/Station, scenic drive past Shillong to Cherrapunji. Visit Ward's Lake and Police Bazar en route. Dinner and overnight in Cherrapunji.",
-          "meals": "Dinner Included",
-          "_id": "6a9e484434458e0097cb24e7",
           "hotel": "Cherrapunji Resort",
+          "meals": "Dinner Included",
           "activities": [
             "Scenic Drive",
             "Ward's Lake"
@@ -2821,9 +2776,8 @@
           "day": 2,
           "title": "Nongriat Living Root Bridge Trek",
           "desc": "Trek to Nongriat village, Double Decker Root Bridge, Single Decker Bridge, Blue Lagoon, and Rainbow Falls. Dinner and overnight.",
-          "meals": "Breakfast & Dinner",
-          "_id": "6a9e484434458e0097cb24e8",
           "hotel": "Cherrapunji Resort",
+          "meals": "Breakfast & Dinner",
           "activities": [
             "Double Decker Bridge",
             "Blue Lagoon"
@@ -2833,9 +2787,8 @@
           "day": 3,
           "title": "Cherrapunji Waterfalls to Shillong",
           "desc": "Visit Seven Sisters Waterfall, Mawsmai Cave, Nohkalikai Falls, Wei Sawdong Falls, and Arwah Cave. Drive to Shillong for dinner and overnight.",
-          "meals": "Breakfast & Dinner",
-          "_id": "6a9e484434458e0097cb24e9",
           "hotel": "Shillong Hotel",
+          "meals": "Breakfast & Dinner",
           "activities": [
             "Nohkalikai Falls",
             "Wei Sawdong Falls",
@@ -2846,9 +2799,8 @@
           "day": 4,
           "title": "Mawlyngbna River Trekking & Canyoning",
           "desc": "Drive to Mawlyngbna adventure hub. River trekking, cliff jumping, kayaking, natural water slides, and Split Rock. Return to Shillong.",
-          "meals": "Breakfast & Dinner",
-          "_id": "6a9e484434458e0097cb24ea",
           "hotel": "Shillong Hotel",
+          "meals": "Breakfast & Dinner",
           "activities": [
             "Cliff Jumping",
             "Natural Water Slides",
@@ -2859,9 +2811,8 @@
           "day": 5,
           "title": "Phe Phe & Krang Suri Waterfalls & Departure",
           "desc": "Visit breathtaking Phe Phe Falls and blue-water Krang Suri Falls. Drive back to Guwahati for late-night drop at airport/station.",
-          "meals": "Breakfast Included",
-          "_id": "6a9e484434458e0097cb24eb",
           "hotel": "Departure Transit",
+          "meals": "Breakfast Included",
           "activities": [
             "Phe Phe Falls",
             "Krang Suri Falls",
@@ -2904,25 +2855,7 @@
         }
       ],
       "published": true,
-      "featured": false,
-      "_id": "6a9e484544d4e520bb9a17b6",
-      "__v": 0,
-      "createdAt": "2026-09-07T05:14:44.383Z",
-      "departures": [],
-      "highlights": [],
-      "isPremium": false,
-      "tags": [],
-      "updatedAt": "2026-09-07T05:29:26.073Z",
-      "vehicleOptions": [],
-      "country": "",
-      "subCategory": "Premium Group Tours",
-      "tourType": "group",
-      "originalPrice": 55000,
-      "isFeatured": false,
-      "availableSeats": 10,
-      "maxTravellers": 25,
-      "meals": "Breakfast & Dinners Included (South Indian Available)",
-      "shortDesc": ""
+      "featured": false
     }
   ],
   "destinations": [
@@ -3052,6 +2985,14 @@
     }
   ],
   "notifications": [
+    {
+      "id": "notif-1788789048112",
+      "title": "New Website Enquiry",
+      "desc": "Karthik Raja enquired for Munnar & Alleppey",
+      "time": "Just now",
+      "read": false,
+      "createdAt": "2026-09-07T13:50:48.112Z"
+    },
     {
       "id": "notif-1788703903892",
       "title": "New Website Enquiry",

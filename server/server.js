@@ -172,6 +172,23 @@ setInterval(() => {
 }, 45000);
 
 // ============================================================
+// MIDDLEWARE: Netlify Function Path Rewriting & MongoDB Guard
+// ============================================================
+app.use((req, res, next) => {
+  if (req.url.startsWith('/.netlify/functions/api')) {
+    req.url = req.url.replace('/.netlify/functions/api', '/api');
+  }
+  next();
+});
+
+app.use(async (req, res, next) => {
+  if (!isConnected || mongoose.connection.readyState !== 1) {
+    await connectDB().catch(() => {});
+  }
+  next();
+});
+
+// ============================================================
 // HEALTH & DIAGNOSTICS
 // ============================================================
 app.get('/api/health', async (req, res) => {
@@ -258,7 +275,9 @@ app.get('/api/tours/:id', async (req, res) => {
 // CREATE
 app.post('/api/tours', async (req, res) => {
   try {
-    const tourData = req.body;
+    const tourData = { ...req.body };
+    delete tourData._id;
+
     if (!tourData.name || typeof tourData.name !== 'string' || !tourData.name.trim()) {
       return res.status(400).json({ error: 'Validation Error: Tour "name" is required' });
     }
@@ -284,6 +303,7 @@ app.post('/api/tours', async (req, res) => {
     }
     res.status(201).json(tourData);
   } catch (err) {
+    console.error('Error creating tour:', err);
     res.status(400).json({ error: err.message });
   }
 });
@@ -293,6 +313,7 @@ app.put('/api/tours/:id', async (req, res) => {
   try {
     const { id } = req.params;
     const updateData = { ...req.body, updatedAt: new Date() };
+    delete updateData._id;
 
     // Update local store
     const idx = localStore.tours.findIndex(t => t.id === id);
@@ -302,11 +323,12 @@ app.put('/api/tours/:id', async (req, res) => {
     }
 
     if (isConnected) {
-      const updated = await Tour.findOneAndUpdate({ id }, updateData, { new: true, upsert: true });
+      const updated = await Tour.findOneAndUpdate({ id }, updateData, { returnDocument: 'after', upsert: true });
       return res.json(updated);
     }
     res.json(localStore.tours[idx] || updateData);
   } catch (err) {
+    console.error('Error updating tour:', err);
     res.status(400).json({ error: err.message });
   }
 });
@@ -323,6 +345,7 @@ app.delete('/api/tours/:id', async (req, res) => {
     }
     res.json({ message: 'Tour deleted successfully', id });
   } catch (err) {
+    console.error('Error deleting tour:', err);
     res.status(500).json({ error: err.message });
   }
 });
@@ -362,7 +385,9 @@ app.get('/api/destinations/:id', async (req, res) => {
 // CREATE
 app.post('/api/destinations', async (req, res) => {
   try {
-    const destData = req.body;
+    const destData = { ...req.body };
+    delete destData._id;
+
     if (!destData.name || typeof destData.name !== 'string' || !destData.name.trim()) {
       return res.status(400).json({ error: 'Validation Error: Destination "name" is required' });
     }
@@ -383,6 +408,7 @@ app.post('/api/destinations', async (req, res) => {
     }
     res.status(201).json(destData);
   } catch (err) {
+    console.error('Error creating destination:', err);
     res.status(400).json({ error: err.message });
   }
 });
@@ -392,6 +418,7 @@ app.put('/api/destinations/:id', async (req, res) => {
   try {
     const { id } = req.params;
     const updateData = { ...req.body, updatedAt: new Date() };
+    delete updateData._id;
 
     const idx = localStore.destinations.findIndex(d => d.id === id);
     if (idx !== -1) {
@@ -400,11 +427,12 @@ app.put('/api/destinations/:id', async (req, res) => {
     }
 
     if (isConnected) {
-      const updated = await Destination.findOneAndUpdate({ id }, updateData, { new: true, upsert: true });
+      const updated = await Destination.findOneAndUpdate({ id }, updateData, { returnDocument: 'after', upsert: true });
       return res.json(updated);
     }
     res.json(localStore.destinations[idx] || updateData);
   } catch (err) {
+    console.error('Error updating destination:', err);
     res.status(400).json({ error: err.message });
   }
 });
@@ -460,7 +488,9 @@ app.get('/api/leads/:id', async (req, res) => {
 // CREATE
 app.post('/api/leads', async (req, res) => {
   try {
-    const leadData = req.body;
+    const leadData = { ...req.body };
+    delete leadData._id;
+
     if (!leadData.customerName || !leadData.phone) {
       return res.status(400).json({ error: 'Validation Error: "customerName" and "phone" are required' });
     }
@@ -493,6 +523,7 @@ app.post('/api/leads', async (req, res) => {
     }
     res.status(201).json(leadData);
   } catch (err) {
+    console.error('Error creating lead:', err);
     res.status(400).json({ error: err.message });
   }
 });
@@ -502,6 +533,7 @@ app.put('/api/leads/:id', async (req, res) => {
   try {
     const { id } = req.params;
     const updateData = { ...req.body, updatedAt: new Date() };
+    delete updateData._id;
 
     const idx = localStore.leads.findIndex(l => l.id === id);
     if (idx !== -1) {
@@ -510,11 +542,12 @@ app.put('/api/leads/:id', async (req, res) => {
     }
 
     if (isConnected) {
-      const updated = await Lead.findOneAndUpdate({ id }, updateData, { new: true });
+      const updated = await Lead.findOneAndUpdate({ id }, updateData, { returnDocument: 'after' });
       return res.json(updated);
     }
     res.json(localStore.leads[idx] || updateData);
   } catch (err) {
+    console.error('Error updating lead:', err);
     res.status(400).json({ error: err.message });
   }
 });
@@ -570,7 +603,9 @@ app.get('/api/customers/:id', async (req, res) => {
 // CREATE
 app.post('/api/customers', async (req, res) => {
   try {
-    const custData = req.body;
+    const custData = { ...req.body };
+    delete custData._id;
+
     if (!custData.name || !custData.phone) {
       return res.status(400).json({ error: 'Validation Error: Customer "name" and "phone" are required' });
     }
@@ -590,6 +625,7 @@ app.post('/api/customers', async (req, res) => {
     }
     res.status(201).json(custData);
   } catch (err) {
+    console.error('Error creating customer:', err);
     res.status(400).json({ error: err.message });
   }
 });
@@ -599,6 +635,7 @@ app.put('/api/customers/:id', async (req, res) => {
   try {
     const { id } = req.params;
     const updateData = { ...req.body, updatedAt: new Date() };
+    delete updateData._id;
 
     const idx = localStore.customers.findIndex(c => c.id === id);
     if (idx !== -1) {
@@ -607,11 +644,12 @@ app.put('/api/customers/:id', async (req, res) => {
     }
 
     if (isConnected) {
-      const updated = await Customer.findOneAndUpdate({ id }, updateData, { new: true });
+      const updated = await Customer.findOneAndUpdate({ id }, updateData, { returnDocument: 'after' });
       return res.json(updated);
     }
     res.json(localStore.customers[idx] || updateData);
   } catch (err) {
+    console.error('Error updating customer:', err);
     res.status(400).json({ error: err.message });
   }
 });
@@ -628,6 +666,7 @@ app.delete('/api/customers/:id', async (req, res) => {
     }
     res.json({ message: 'Customer deleted', id });
   } catch (err) {
+    console.error('Error deleting customer:', err);
     res.status(500).json({ error: err.message });
   }
 });
@@ -667,7 +706,9 @@ app.get('/api/feedback/:id', async (req, res) => {
 // CREATE
 app.post('/api/feedback', async (req, res) => {
   try {
-    const fbData = req.body;
+    const fbData = { ...req.body };
+    delete fbData._id;
+
     if (!fbData.customerName || !fbData.comment) {
       return res.status(400).json({ error: 'Validation Error: "customerName" and "comment" are required' });
     }
@@ -688,6 +729,7 @@ app.post('/api/feedback', async (req, res) => {
     }
     res.status(201).json(fbData);
   } catch (err) {
+    console.error('Error creating feedback:', err);
     res.status(400).json({ error: err.message });
   }
 });
@@ -697,6 +739,7 @@ app.put('/api/feedback/:id', async (req, res) => {
   try {
     const { id } = req.params;
     const updateData = { ...req.body, updatedAt: new Date() };
+    delete updateData._id;
 
     const idx = localStore.feedback.findIndex(f => f.id === id);
     if (idx !== -1) {
@@ -705,11 +748,12 @@ app.put('/api/feedback/:id', async (req, res) => {
     }
 
     if (isConnected) {
-      const updated = await Feedback.findOneAndUpdate({ id }, updateData, { new: true });
+      const updated = await Feedback.findOneAndUpdate({ id }, updateData, { returnDocument: 'after' });
       return res.json(updated);
     }
     res.json(localStore.feedback[idx] || updateData);
   } catch (err) {
+    console.error('Error updating feedback:', err);
     res.status(400).json({ error: err.message });
   }
 });
@@ -726,6 +770,7 @@ app.delete('/api/feedback/:id', async (req, res) => {
     }
     res.json({ message: 'Review deleted', id });
   } catch (err) {
+    console.error('Error deleting feedback:', err);
     res.status(500).json({ error: err.message });
   }
 });
@@ -747,7 +792,9 @@ app.get('/api/staff', async (req, res) => {
 
 app.post('/api/staff', async (req, res) => {
   try {
-    const staffData = req.body;
+    const staffData = { ...req.body };
+    delete staffData._id;
+
     if (!staffData.id) staffData.id = `staff-${Date.now()}`;
     localStore.staff.push(staffData);
     saveLocalStore();
@@ -757,6 +804,7 @@ app.post('/api/staff', async (req, res) => {
     }
     res.status(201).json(staffData);
   } catch (err) {
+    console.error('Error creating staff:', err);
     res.status(400).json({ error: err.message });
   }
 });

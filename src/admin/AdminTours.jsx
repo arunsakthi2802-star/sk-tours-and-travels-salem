@@ -26,6 +26,12 @@ export default function AdminTours() {
   const handleSaveTour = (e) => {
     e.preventDefault();
     const form = e.target;
+    const durationDays = Number(form.durationDays.value) || 1;
+    const durationNights = Number(form.durationNights.value) || 0;
+    const duration = `${durationNights} Nights / ${durationDays} Days`;
+    const price = Number(form.price.value);
+    const originalPrice = Number(form.originalPrice.value || form.price.value);
+
     const tourData = {
       name: form.name.value,
       destination: form.destination.value,
@@ -33,10 +39,12 @@ export default function AdminTours() {
       category: form.category.value,
       subCategory: form.subCategory.value,
       tourType: form.tourType.value,
-      durationDays: Number(form.durationDays.value),
-      durationNights: Number(form.durationNights.value),
-      price: Number(form.price.value),
-      originalPrice: Number(form.originalPrice.value || form.price.value),
+      duration,
+      durationDays,
+      durationNights,
+      price,
+      offerPrice: originalPrice,
+      originalPrice,
       isPremium: form.isPremium.checked,
       isFeatured: form.isFeatured.checked,
       availableSeats: Number(form.availableSeats.value),
@@ -45,13 +53,14 @@ export default function AdminTours() {
       hotelStars: form.hotelStars.value,
       meals: form.meals.value,
       transport: form.transport.value,
-      image: form.image.value || "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=800&q=80",
+      image: form.image.value || (editingTour && editingTour.image) || "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=800&q=80",
       shortDesc: form.shortDesc.value,
+      description: form.shortDesc.value || (editingTour && editingTour.description) || form.overview.value || '',
       overview: form.overview.value,
       highlights: form.highlights.value.split('\n').filter(Boolean),
       inclusions: form.inclusions.value.split('\n').filter(Boolean),
       exclusions: form.exclusions.value.split('\n').filter(Boolean),
-      published: true
+      published: editingTour.published !== undefined ? editingTour.published : true
     };
 
     if (editingTour && editingTour.id) {
@@ -303,9 +312,17 @@ export default function AdminTours() {
 
                 <div className="form-group">
                   <label className="form-label">Primary Category</label>
-                  <select name="category" defaultValue={editingTour.category || 'International'} className="form-select">
-                    <option value="International">International</option>
+                  <select name="category" defaultValue={editingTour.category || 'Kashmir'} className="form-select">
+                    <option value="Kashmir">Kashmir</option>
+                    <option value="Himachal">Himachal</option>
+                    <option value="Delhi & Agra">Delhi & Agra</option>
+                    <option value="Rajasthan">Rajasthan</option>
+                    <option value="Leh-Ladakh">Leh-Ladakh</option>
+                    <option value="Kerala">Kerala</option>
+                    <option value="Hyderabad">Hyderabad</option>
+                    <option value="Meghalaya">Meghalaya</option>
                     <option value="Domestic">Domestic</option>
+                    <option value="International">International</option>
                     <option value="Pilgrimage">Pilgrimage</option>
                     <option value="Honeymoon">Honeymoon</option>
                     <option value="Luxury">Luxury</option>

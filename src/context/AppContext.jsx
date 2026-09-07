@@ -489,106 +489,137 @@ export function AppProvider({ children }) {
 
   // Tour Package CMS Methods -> MongoDB
   const addTour = async (tourData) => {
+    const { _id, ...cleanData } = tourData;
     const newTour = {
-      ...tourData,
-      id: `tour-${Date.now()}`,
-      slug: (tourData.name || 'tour').toLowerCase().replace(/[^a-z0-9]+/g, '-'),
-      rating: tourData.rating || 5.0,
-      reviewsCount: tourData.reviewsCount || 0,
-      published: tourData.published !== undefined ? tourData.published : true
+      ...cleanData,
+      id: cleanData.id || `tour-${Date.now()}`,
+      slug: (cleanData.name || 'tour').toLowerCase().replace(/[^a-z0-9]+/g, '-'),
+      rating: cleanData.rating || 5.0,
+      reviewsCount: cleanData.reviewsCount || 0,
+      published: cleanData.published !== undefined ? cleanData.published : true
     };
     setTours(prev => [newTour, ...prev]);
 
     try {
-      await fetch('/api/tours', {
+      const res = await fetch('/api/tours', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(newTour)
       });
+      if (res.ok) {
+        const saved = await res.json();
+        setTours(prev => prev.map(t => t.id === newTour.id ? { ...t, ...saved } : t));
+        showToast(`Tour "${newTour.name}" saved to MongoDB database`);
+      } else {
+        const err = await res.json().catch(() => ({}));
+        showToast(`Failed to save tour: ${err.error || res.statusText}`, 'error');
+      }
     } catch (err) {
       console.error('Failed to add tour to MongoDB:', err);
+      showToast('Error connecting to database', 'error');
     }
-
-    showToast(`Tour "${newTour.name}" added to MongoDB catalogue`);
   };
 
   const updateTour = async (updatedTour) => {
-    setTours(prev => prev.map(t => t.id === updatedTour.id ? updatedTour : t));
+    const { _id, ...cleanTour } = updatedTour;
+    setTours(prev => prev.map(t => t.id === cleanTour.id ? cleanTour : t));
 
     try {
-      await fetch(`/api/tours/${updatedTour.id}`, {
+      const res = await fetch(`/api/tours/${cleanTour.id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(updatedTour)
+        body: JSON.stringify(cleanTour)
       });
+      if (res.ok) {
+        const saved = await res.json();
+        setTours(prev => prev.map(t => t.id === cleanTour.id ? { ...t, ...saved } : t));
+        showToast(`Tour "${cleanTour.name}" updated in MongoDB database`);
+      } else {
+        const err = await res.json().catch(() => ({}));
+        showToast(`Failed to update tour: ${err.error || res.statusText}`, 'error');
+      }
     } catch (err) {
       console.error('Failed to update tour in MongoDB:', err);
+      showToast('Error connecting to database', 'error');
     }
-
-    showToast(`Tour "${updatedTour.name}" updated successfully`);
   };
 
   const deleteTour = async (tourId) => {
+    const backup = [...tours];
     setTours(prev => prev.filter(t => t.id !== tourId));
 
     try {
-      await fetch(`/api/tours/${tourId}`, {
+      const res = await fetch(`/api/tours/${tourId}`, {
         method: 'DELETE'
       });
+      if (res.ok) {
+        showToast("Tour deleted from MongoDB database", "info");
+      } else {
+        setTours(backup);
+        showToast("Failed to delete tour from database", "error");
+      }
     } catch (err) {
+      setTours(backup);
       console.error('Failed to delete tour from MongoDB:', err);
+      showToast("Error connecting to database", "error");
     }
-
-    showToast("Tour deleted from catalogue", "info");
   };
 
   const duplicateTour = async (tourId) => {
     const target = tours.find(t => t.id === tourId);
     if (!target) return;
+    const { _id, ...cleanTarget } = target;
     const duplicated = {
-      ...target,
+      ...cleanTarget,
       id: `tour-${Date.now()}`,
-      name: `${target.name} (Copy)`,
-      slug: `${target.slug}-copy`
+      name: `${cleanTarget.name} (Copy)`,
+      slug: `${cleanTarget.slug}-copy`
     };
-    delete duplicated._id;
     setTours(prev => [duplicated, ...prev]);
 
     try {
-      await fetch('/api/tours', {
+      const res = await fetch('/api/tours', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(duplicated)
       });
+      if (res.ok) {
+        const saved = await res.json();
+        setTours(prev => prev.map(t => t.id === duplicated.id ? { ...t, ...saved } : t));
+        showToast(`Tour duplicated as "${duplicated.name}" in MongoDB`);
+      } else {
+        showToast("Failed to duplicate tour in database", "error");
+      }
     } catch (err) {
       console.error('Failed to duplicate tour in MongoDB:', err);
+      showToast("Error connecting to database", "error");
     }
-
-    showToast(`Tour duplicated as "${duplicated.name}"`);
   };
 
   const togglePublishTour = async (tourId) => {
-    let targetTour = null;
+    let newPublishState = false;
     setTours(prev => prev.map(t => {
       if (t.id === tourId) {
-        const published = !t.published;
-        targetTour = { ...t, published };
-        showToast(`Tour ${published ? 'Published to website' : 'Unpublished (Draft)'}`);
-        return targetTour;
+        newPublishState = !t.published;
+        return { ...t, published: newPublishState };
       }
       return t;
     }));
 
-    if (targetTour) {
-      try {
-        await fetch(`/api/tours/${tourId}`, {
-          method: 'PUT',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ published: targetTour.published })
-        });
-      } catch (err) {
-        console.error('Failed to update publish state in MongoDB:', err);
+    try {
+      const res = await fetch(`/api/tours/${tourId}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ published: newPublishState })
+      });
+      if (res.ok) {
+        showToast(`Tour ${newPublishState ? 'Published to website & database' : 'Unpublished (Draft)'}`);
+      } else {
+        showToast('Failed to update tour status in database', 'error');
       }
+    } catch (err) {
+      console.error('Failed to update publish state in MongoDB:', err);
+      showToast('Error connecting to database', 'error');
     }
   };
 

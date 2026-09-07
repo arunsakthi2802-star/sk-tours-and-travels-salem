@@ -49,13 +49,23 @@ async function seed() {
     await mongoose.connect(mongoUri, { serverSelectionTimeoutMS: 6000 });
     console.log('Connected to Atlas! Upserting tours & destinations...');
 
+    // Remove any old/dummy tours not in the official 22 brochure catalog
+    const validTourIds = INITIAL_TOURS.map(t => t.id);
+    const deletedRes = await Tour.deleteMany({ id: { $nin: validTourIds } });
+    if (deletedRes.deletedCount > 0) {
+      console.log(`✓ Cleaned up ${deletedRes.deletedCount} outdated tours from Atlas.`);
+    }
+
     for (const tour of INITIAL_TOURS) {
-      await Tour.findOneAndUpdate({ id: tour.id }, tour, { upsert: true, new: true });
+      await Tour.findOneAndUpdate({ id: tour.id }, tour, { upsert: true, returnDocument: 'after' });
     }
     console.log(`✓ Upserted ${INITIAL_TOURS.length} tours to Atlas.`);
 
+    const validDestIds = INITIAL_DESTINATIONS.map(d => d.id);
+    await Destination.deleteMany({ id: { $nin: validDestIds } });
+
     for (const dest of INITIAL_DESTINATIONS) {
-      await Destination.findOneAndUpdate({ id: dest.id }, dest, { upsert: true, new: true });
+      await Destination.findOneAndUpdate({ id: dest.id }, dest, { upsert: true, returnDocument: 'after' });
     }
     console.log(`✓ Upserted ${INITIAL_DESTINATIONS.length} destinations to Atlas.`);
 

@@ -212,6 +212,99 @@ export const INITIAL_TOURS = [
     published: true,
     featured: true
   },
+  {
+    id: "tour-beyond-kashmir-4n5d",
+    name: "Beyond Kashmir – Hidden Valleys & Alpine Treks",
+    slug: "beyond-kashmir-hidden-valleys-4n-5d",
+    duration: "4 Nights / 5 Days",
+    durationDays: 5,
+    durationNights: 4,
+    destination: "Naranag, Domail & Sonamarg",
+    category: "Kashmir",
+    price: 11500,
+    offerPrice: 13200,
+    rating: 5.0,
+    reviewsCount: 24,
+    image: "https://images.unsplash.com/photo-1598091383021-15ddea10925d?auto=format&fit=crop&w=1200&q=80",
+    gallery: [
+      "https://images.unsplash.com/photo-1598091383021-15ddea10925d?auto=format&fit=crop&w=600&q=80",
+      "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80",
+      "https://images.unsplash.com/photo-1548013146-72479768bada?auto=format&fit=crop&w=600&q=80"
+    ],
+    description: "A journey beyond the usual tourist routes of Kashmir, exploring hidden valleys, alpine landscapes, village stays in Naranag, and peaceful Himalayan experiences.",
+    overview: "Step away from crowded tourist tracks to experience the untouched wilderness of Kashmir. Highlights include traditional village homestay in historic Naranag, alpine stream trek to Domail and Marchoi, lakeside/riverside camping with bonfires, and Dal Lake Shikara ride.",
+    tourLeader: "Mr. Sakthivel (Salem Tour Director)",
+    hotelStars: "Charming Himalayan Homestay & Riverside Campsite",
+    transport: "Private Vehicle (Jammu to Jammu Entire Tour)",
+    itinerary: [
+      {
+        day: 1,
+        title: "Arrival in Jammu & Scenic Drive to Srinagar",
+        desc: "Arrival at Jammu followed by a scenic drive to Srinagar through the beautiful mountain roads of Kashmir. Upon arrival, check in to the hotel and relax before exploring nearby local areas and enjoying the peaceful atmosphere of Srinagar. Overnight stay in Srinagar.",
+        hotel: "Srinagar Deluxe Hotel",
+        meals: "Dinner Included",
+        activities: ["Scenic Mountain Drive", "Local Market Stroll", "Srinagar Arrival"]
+      },
+      {
+        day: 2,
+        title: "Srinagar to Naranag Heritage Village",
+        desc: "After breakfast, proceed towards the beautiful Naranag Valley with en-route sightseeing at Ganderbal. Naranag is a peaceful Himalayan village surrounded by forests and mountains, known for its hidden trekking routes, 8th-century temple ruins, and untouched natural beauty. Upon arrival, check in to the homestay and spend the evening exploring the village surroundings. Overnight stay in Naranag.",
+        hotel: "Traditional Naranag Himalayan Homestay",
+        meals: "Breakfast & Dinner Included",
+        activities: ["Ganderbal Viewpoint", "Naranag Ancient Temple Ruins", "Village Exploration"]
+      },
+      {
+        day: 3,
+        title: "Trek to Domail & Riverside Camping / Marchoi Valley",
+        desc: "After breakfast, enjoy a short trek to Domail, a scenic meadow where two mountain streams meet amidst breathtaking Himalayan landscapes. Guests can also opt for an extended trek to Marchoi, an untouched alpine valley famous for its rivers, meadows, and raw mountain beauty. Later enjoy a peaceful riverside camping experience with dinner and overnight stay.",
+        hotel: "Scenic Alpine Riverside Camp",
+        meals: "Breakfast & Camp Dinner Included",
+        activities: ["Domail Stream Confluence Trek", "Marchoi Alpine Exploration", "Riverside Campfire"]
+      },
+      {
+        day: 4,
+        title: "Sonamarg Meadow of Gold & Astanmarg Bonfire",
+        desc: "After breakfast, transfer to Sonamarg, popularly known as the Meadow of Gold, famous for its glaciers, alpine scenery, and breathtaking mountain landscapes. Explore the surrounding valleys and later check in to the Astanmarg homestay. Enjoy an evening bonfire and jam session followed by dinner and overnight stay.",
+        hotel: "Astanmarg Scenic Homestay",
+        meals: "Breakfast & Dinner Included",
+        activities: ["Sonamarg Glacier Exploration", "Astanmarg Valley View", "Bonfire & Music Session"]
+      },
+      {
+        day: 5,
+        title: "Dal Lake Shikara Experience & Jammu Departure",
+        desc: "After breakfast, enjoy a traditional Shikara ride on Dal Lake while admiring the floating markets, houseboats, and mountain views. Later proceed towards Jammu for your return journey with unforgettable memories of Kashmir.",
+        hotel: "Departure Transit",
+        meals: "Breakfast Included",
+        activities: ["Dal Lake Shikara Ride", "Floating Gardens", "Transfer to Jammu"]
+      }
+    ],
+    inclusions: [
+      "Accommodation in authentic homestay / riverside camp for 4 nights",
+      "Daily breakfast & dinner",
+      "Transportation for the entire trip (Jammu to Jammu)",
+      "Guided trek experience to Domail confluence",
+      "Riverside camping experience",
+      "Evening bonfire & musical jam session",
+      "Traditional Shikara ride at Dal Lake",
+      "Driver allowance, tolls, fuel and parking charges"
+    ],
+    exclusions: [
+      "Flights or train tickets to Jammu",
+      "Personal expenses (laundry, telephone, tips)",
+      "Lunch during travel days",
+      "Entry tickets & local camera permits if applicable",
+      "Any activities not specifically mentioned in the itinerary"
+    ],
+    pricingTable: [
+      { pax: "2 Pax", vehicle: "1 Room, Sedan", offSeason: "₹14,500", inSeason: "₹16,500", deluxe: "₹18,500", superDeluxe: "₹21,500" },
+      { pax: "4 Pax", vehicle: "2 Rooms, Sedan", offSeason: "₹12,800", inSeason: "₹14,200", deluxe: "₹16,000", superDeluxe: "₹18,500" },
+      { pax: "6 Pax", vehicle: "3 Rooms, XUV", offSeason: "₹11,500", inSeason: "₹13,200", deluxe: "₹14,800", superDeluxe: "₹17,200" },
+      { pax: "8 Pax", vehicle: "4 Rooms, Tempo", offSeason: "₹10,800", inSeason: "₹12,500", deluxe: "₹13,900", superDeluxe: "₹16,400" },
+      { pax: "10 Pax", vehicle: "5 Rooms, Tempo", offSeason: "₹9,800", inSeason: "₹11,500", deluxe: "₹12,800", superDeluxe: "₹15,200" }
+    ],
+    published: true,
+    featured: true
+  },
 
   // ------------------------------------------------------------
   // 2. HIMACHAL PACKAGES
