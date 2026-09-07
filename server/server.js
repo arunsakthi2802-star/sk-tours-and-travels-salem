@@ -244,6 +244,8 @@ app.get('/api/health', async (req, res) => {
       feedback: localStore.feedback.length,
       staff: localStore.staff.length,
       notifications: localStore.notifications.length,
+      adminProfiles: localStore.adminProfiles ? localStore.adminProfiles.length : 1,
+      images: 0,
     };
 
     if (isConnected) {
@@ -256,6 +258,8 @@ app.get('/api/health', async (req, res) => {
           feedback: await Feedback.countDocuments(),
           staff: await Staff.countDocuments(),
           notifications: await Notification.countDocuments(),
+          adminProfiles: await AdminProfile.countDocuments(),
+          images: await Image.countDocuments(),
         };
       } catch (e) {
         console.warn('Count fetch error:', e.message);
