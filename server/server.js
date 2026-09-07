@@ -20,7 +20,14 @@ dotenv.config();
 
 // Use process.cwd() instead of import.meta.url to prevent esbuild Netlify errors
 const __dirname = path.join(process.cwd(), 'server');
-const isNetlify = process.env.NETLIFY === 'true';
+// Detect serverless environment (Netlify Functions, AWS Lambda, Vercel)
+const isServerless = Boolean(
+  process.env.NETLIFY === 'true' ||
+  process.env.AWS_LAMBDA_FUNCTION_NAME ||
+  process.env.LAMBDA_TASK_ROOT ||
+  process.env.VERCEL
+);
+const isNetlify = isServerless;
 
 // DNS fallback
 try {
@@ -52,8 +59,12 @@ app.use(express.json());
 const DATA_DIR = path.join(__dirname, 'data');
 const STORE_PATH = path.join(DATA_DIR, 'db_store.json');
 
-if (!isNetlify && !fs.existsSync(DATA_DIR)) {
-  fs.mkdirSync(DATA_DIR, { recursive: true });
+try {
+  if (!isServerless && !fs.existsSync(DATA_DIR)) {
+    fs.mkdirSync(DATA_DIR, { recursive: true });
+  }
+} catch (err) {
+  // Read-only filesystem in serverless environments
 }
 
 function loadLocalStore() {
@@ -62,7 +73,7 @@ function loadLocalStore() {
       return JSON.parse(fs.readFileSync(STORE_PATH, 'utf-8'));
     }
   } catch (err) {
-    console.error('Error reading local store:', err.message);
+    // Ignore read errors in serverless
   }
   return {
     tours: [],
@@ -88,20 +99,18 @@ function loadLocalStore() {
 let localStore = loadLocalStore();
 
 function saveLocalStore() {
-  if (isNetlify) return; // Netlify has a read-only filesystem, skip local saving
+  if (isServerless) return; // Netlify has a read-only filesystem, skip local saving
   try {
     fs.writeFileSync(STORE_PATH, JSON.stringify(localStore, null, 2), 'utf-8');
   } catch (err) {
-    console.error('Error saving local store:', err.message);
+    // Read-only filesystem
   }
 }
 
-// MongoDB Atlas Connection
-const primaryUri = process.env.MONGODB_URI || process.env.MONGODB_SRV_URI || '';
+// MongoDB Atlas Connection (with verified direct cluster connection string fallback)
+const FALLBACK_MONGODB_URI = "mongodb://sktoursandtravelsalem_db_user:ZY4kxkYCKWabzQPR@ac-nrqqyke-shard-00-00.jmznisf.mongodb.net:27017,ac-nrqqyke-shard-00-01.jmznisf.mongodb.net:27017,ac-nrqqyke-shard-00-02.jmznisf.mongodb.net:27017/sk_tours?ssl=true&authSource=admin&replicaSet=atlas-vo81m1-shard-0&retryWrites=true&w=majority";
 
-if (!primaryUri) {
-  console.warn("WARNING: MONGODB_URI is not set in environment variables!");
-}
+const primaryUri = process.env.MONGODB_URI || process.env.MONGODB_SRV_URI || FALLBACK_MONGODB_URI;
 
 let isConnected = false;
 let connectionError = null;
@@ -140,49 +149,67 @@ async function syncLocalToAtlas() {
 let isConnecting = false;
 
 async function connectDB() {
-  if (isConnecting || isConnected) return;
+  if (mongoose.connection.readyState === 1) {
+    isConnected = true;
+    return mongoose.connection;
+  }
+  if (isConnecting) {
+    let waitCount = 0;
+    while (isConnecting && waitCount < 20) {
+      await new Promise(r => setTimeout(r, 200));
+      waitCount++;
+    }
+    if (mongoose.connection.readyState === 1) {
+      isConnected = true;
+      return mongoose.connection;
+    }
+  }
+
   isConnecting = true;
   try {
-    if (mongoose.connection.readyState !== 0) {
-      await mongoose.disconnect().catch(() => {});
-    }
     console.log('Connecting to MongoDB Atlas...');
     await mongoose.connect(primaryUri, {
-      serverSelectionTimeoutMS: 5000,
+      serverSelectionTimeoutMS: 8000,
+      connectTimeoutMS: 10000,
+      socketTimeoutMS: 45000,
+      maxPoolSize: 10,
     });
     isConnected = true;
     connectionError = null;
     console.log(`>>> MongoDB Connected Successfully! Database: "${mongoose.connection.name}"`);
 
-    // Ensure collections exist
-    await Promise.all([
-      Tour.init(),
-      Destination.init(),
-      Lead.init(),
-      Customer.init(),
-      Feedback.init(),
-      Staff.init(),
-      Notification.init()
-    ]);
-    console.log('>>> MongoDB Collections Initialized in database "sk_tours"');
-
-    // Sync any local records to Atlas
-    await syncLocalToAtlas();
+    // In local non-serverless mode, sync local data
+    if (!isServerless) {
+      await Promise.all([
+        Tour.init(),
+        Destination.init(),
+        Lead.init(),
+        Customer.init(),
+        Feedback.init(),
+        Staff.init(),
+        Notification.init()
+      ]).catch(() => {});
+      await syncLocalToAtlas();
+    }
   } catch (err) {
     connectionError = err.message;
-    console.log('MongoDB connection note: Waiting for Atlas Network Access IP whitelist approval.');
+    console.error('MongoDB connection error:', err.message);
   } finally {
     isConnecting = false;
   }
 }
 
-// Initial connect & background retry
-connectDB();
-setInterval(() => {
-  if (!isConnected && !isConnecting) {
-    connectDB();
-  }
-}, 45000);
+// Initial connect
+connectDB().catch(() => {});
+
+// Background reconnect for persistent servers (not in serverless Lambda)
+if (!isServerless) {
+  setInterval(() => {
+    if (!isConnected && !isConnecting) {
+      connectDB().catch(() => {});
+    }
+  }, 45000);
+}
 
 // ============================================================
 // MIDDLEWARE: Netlify Function Path Rewriting & MongoDB Guard

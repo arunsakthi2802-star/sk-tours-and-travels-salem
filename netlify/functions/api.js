@@ -7,8 +7,25 @@ export const handler = async (event, context) => {
   if (context) {
     context.callbackWaitsForEmptyEventLoop = false;
   }
-  if (event && event.path && event.path.startsWith('/.netlify/functions/api')) {
-    event.path = event.path.replace('/.netlify/functions/api', '/api');
+  if (event && event.path) {
+    if (event.path.startsWith('/.netlify/functions/api')) {
+      event.path = event.path.replace('/.netlify/functions/api', '/api');
+    }
   }
-  return await serverlessHandler(event, context);
+  try {
+    return await serverlessHandler(event, context);
+  } catch (err) {
+    console.error('Unhandled serverless handler error:', err);
+    return {
+      statusCode: 500,
+      headers: {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*'
+      },
+      body: JSON.stringify({
+        status: 'error',
+        message: err.message
+      })
+    };
+  }
 };
