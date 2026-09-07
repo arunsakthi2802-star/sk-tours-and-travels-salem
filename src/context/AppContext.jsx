@@ -926,6 +926,9 @@ export function AppProvider({ children }) {
     return cleanData;
   };
 
+  // Backward compatibility alias for staff profile update
+  const updateStaffProfile = updateAdminProfile;
+
   // Upload Image to MongoDB Atlas / Server
   const uploadImage = async (base64Data, filename = 'image.jpg') => {
     try {
