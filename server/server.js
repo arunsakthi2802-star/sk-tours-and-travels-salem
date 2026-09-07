@@ -18,8 +18,9 @@ import Notification from './models/Notification.js';
 
 dotenv.config();
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+// Use process.cwd() instead of import.meta.url to prevent esbuild Netlify errors
+const __dirname = path.join(process.cwd(), 'server');
+const isNetlify = process.env.NETLIFY === 'true';
 
 // DNS fallback
 try {
@@ -38,7 +39,7 @@ app.use(express.json());
 const DATA_DIR = path.join(__dirname, 'data');
 const STORE_PATH = path.join(DATA_DIR, 'db_store.json');
 
-if (!fs.existsSync(DATA_DIR)) {
+if (!isNetlify && !fs.existsSync(DATA_DIR)) {
   fs.mkdirSync(DATA_DIR, { recursive: true });
 }
 
@@ -74,6 +75,7 @@ function loadLocalStore() {
 let localStore = loadLocalStore();
 
 function saveLocalStore() {
+  if (isNetlify) return; // Netlify has a read-only filesystem, skip local saving
   try {
     fs.writeFileSync(STORE_PATH, JSON.stringify(localStore, null, 2), 'utf-8');
   } catch (err) {
