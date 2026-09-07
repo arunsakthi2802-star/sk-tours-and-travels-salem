@@ -16,6 +16,7 @@ import Feedback from './models/Feedback.js';
 import Staff from './models/Staff.js';
 import Notification from './models/Notification.js';
 import Image from './models/Image.js';
+import AdminProfile from './models/AdminProfile.js';
 
 dotenv.config();
 
@@ -977,23 +978,179 @@ app.put('/api/notifications/read-all', async (req, res) => {
 });
 
 // ============================================================
-// ADMIN AUTHENTICATION
+// ADMIN PROFILE FULL CRUD API (Direct MongoDB Atlas Sync)
+// ============================================================
+
+// READ ACTIVE ADMIN PROFILE
+app.get('/api/admin/profile', async (req, res) => {
+  try {
+    if (isConnected) {
+      let profile = await AdminProfile.findOne().sort({ createdAt: 1 });
+      if (!profile) {
+        // Auto-seed default admin profile if not exists
+        profile = await AdminProfile.create({
+          id: 'admin-primary',
+          username: 'sk@admin',
+          password: 'sk@admin28',
+          name: 'Mr. S. Karthikeyan',
+          role: 'Super Admin',
+          email: 'admin@sktours.com',
+          phone: '+91 99946 44744',
+          avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=200&q=80',
+          branch: 'Salem HQ (Fairlands)',
+          bio: 'Managing luxury travel itineraries and operations at SK Tours & Travels Salem.'
+        });
+      }
+      return res.json(profile);
+    }
+    res.json(localStore.adminProfiles?.[0] || {
+      id: 'admin-primary',
+      username: 'sk@admin',
+      password: 'sk@admin28',
+      name: 'Mr. S. Karthikeyan',
+      role: 'Super Admin',
+      email: 'admin@sktours.com',
+      phone: '+91 99946 44744'
+    });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// READ ALL ADMIN PROFILES
+app.get('/api/admin/profiles', async (req, res) => {
+  try {
+    if (isConnected) {
+      const profiles = await AdminProfile.find().sort({ createdAt: 1 });
+      return res.json(profiles);
+    }
+    res.json(localStore.adminProfiles || []);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// CREATE NEW ADMIN PROFILE
+app.post('/api/admin/profile', async (req, res) => {
+  try {
+    const adminData = { ...req.body };
+    delete adminData._id;
+    if (!adminData.id) adminData.id = `admin-${Date.now()}`;
+    if (!adminData.username || !adminData.name) {
+      return res.status(400).json({ error: 'Username and Name are required' });
+    }
+
+    if (!localStore.adminProfiles) localStore.adminProfiles = [];
+    localStore.adminProfiles.push(adminData);
+    saveLocalStore();
+
+    if (isConnected) {
+      const created = await AdminProfile.create(adminData);
+      return res.status(201).json(created);
+    }
+    res.status(201).json(adminData);
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+});
+
+// UPDATE ADMIN PROFILE IN MONGODB ATLAS
+app.put('/api/admin/profile/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const updateData = { ...req.body, updatedAt: new Date() };
+    delete updateData._id;
+
+    if (!localStore.adminProfiles) localStore.adminProfiles = [];
+    const idx = localStore.adminProfiles.findIndex(a => a.id === id);
+    if (idx !== -1) {
+      localStore.adminProfiles[idx] = { ...localStore.adminProfiles[idx], ...updateData };
+    } else {
+      localStore.adminProfiles.push({ id, ...updateData });
+    }
+    saveLocalStore();
+
+    if (isConnected) {
+      const updated = await AdminProfile.findOneAndUpdate(
+        { id },
+        updateData,
+        { upsert: true, returnDocument: 'after' }
+      );
+      return res.json(updated);
+    }
+    res.json(localStore.adminProfiles[idx] || { id, ...updateData });
+  } catch (err) {
+    console.error('Error updating admin profile in MongoDB Atlas:', err);
+    res.status(400).json({ error: err.message });
+  }
+});
+
+// DELETE ADMIN PROFILE FROM MONGODB ATLAS
+app.delete('/api/admin/profile/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    if (localStore.adminProfiles) {
+      localStore.adminProfiles = localStore.adminProfiles.filter(a => a.id !== id);
+      saveLocalStore();
+    }
+    if (isConnected) {
+      await AdminProfile.findOneAndDelete({ id });
+    }
+    res.json({ success: true, message: 'Admin profile deleted from MongoDB Atlas', id });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// ============================================================
+// ADMIN AUTHENTICATION (Authenticates against MongoDB Atlas)
 // ============================================================
 app.post('/api/admin/login', async (req, res) => {
   try {
     const { username, password } = req.body;
-    if (username === 'sk@admin' && password === 'sk@admin28') {
+
+    // 1. Verify against MongoDB Atlas AdminProfile collection
+    if (isConnected) {
+      const adminInDb = await AdminProfile.findOne({ username, password });
+      if (adminInDb) {
+        adminInDb.lastLogin = new Date();
+        await adminInDb.save();
+
+        return res.json({
+          success: true,
+          user: {
+            id: adminInDb.id,
+            username: adminInDb.username,
+            name: adminInDb.name,
+            role: adminInDb.role,
+            avatar: adminInDb.avatar,
+            email: adminInDb.email,
+            phone: adminInDb.phone,
+            branch: adminInDb.branch,
+            access: 'Full Access'
+          },
+          token: `sk_auth_${Date.now()}`
+        });
+      }
+    }
+
+    // 2. Fallback check (local store or initial bootstrap)
+    const localAdmin = localStore.adminProfiles?.find(a => a.username === username && a.password === password);
+    if (localAdmin || (username === 'sk@admin' && password === 'sk@admin28')) {
+      const userObj = localAdmin || {
+        id: 'admin-primary',
+        username: 'sk@admin',
+        name: 'Mr. S. Karthikeyan',
+        role: 'Super Admin',
+        access: 'Full Access'
+      };
       return res.json({
         success: true,
-        user: {
-          username: 'sk@admin',
-          name: 'Super Admin',
-          role: 'Administrator',
-          access: 'Full Access'
-        },
+        user: userObj,
         token: `sk_auth_${Date.now()}`
       });
     }
+
     return res.status(401).json({
       success: false,
       error: 'Invalid username or password. Access denied.'

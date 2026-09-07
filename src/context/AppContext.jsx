@@ -87,31 +87,66 @@ export function AppProvider({ children }) {
     return () => window.removeEventListener('popstate', handlePopState);
   }, []);
 
-  // Admin Login with credentials validation
+  // Admin Login with MongoDB Atlas validation & fallback
   const adminLogin = async (username, password) => {
     const cleanUser = (username || '').trim();
     const cleanPass = (password || '').trim();
 
-    // Check credentials: sk@admin & sk@admin28
-    if (cleanUser === 'sk@admin' && cleanPass === 'sk@admin28') {
-      const userObj = { username: 'sk@admin', name: 'Super Admin', role: 'Administrator' };
+    try {
+      const res = await fetch('/api/admin/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username: cleanUser, password: cleanPass })
+      });
+
+      if (res.ok) {
+        const data = await res.json();
+        if (data.success) {
+          const userObj = data.user || { username: cleanUser, name: 'Super Admin', role: 'Administrator' };
+          setIsAdminAuthenticated(true);
+          setAdminUser(userObj);
+          if (data.user) {
+            setAdminProfile(prev => ({ ...prev, ...data.user }));
+            setCurrentStaff(prev => ({ ...prev, ...data.user }));
+          }
+          try {
+            localStorage.setItem('sk_admin_auth', 'true');
+            localStorage.setItem('sk_admin_user', JSON.stringify(userObj));
+          } catch (e) {}
+          showToast(`Welcome back, ${userObj.name}! CRM Dashboard unlocked.`, 'success');
+          navigate('/admin');
+          return { success: true };
+        }
+      }
+    } catch (err) {
+      console.warn('Network login error, trying local credentials:', err.message);
+    }
+
+    // Local fallback check
+    if (
+      (cleanUser === adminProfile.username && cleanPass === adminProfile.password) ||
+      (cleanUser === 'sk@admin' && cleanPass === 'sk@admin28')
+    ) {
+      const userObj = {
+        username: cleanUser,
+        name: adminProfile.name || 'Super Admin',
+        role: adminProfile.role || 'Administrator'
+      };
       setIsAdminAuthenticated(true);
       setAdminUser(userObj);
       try {
         localStorage.setItem('sk_admin_auth', 'true');
         localStorage.setItem('sk_admin_user', JSON.stringify(userObj));
-      } catch (e) {
-        console.error('Storage error:', e);
-      }
-      showToast('Welcome back, Admin! CRM Dashboard unlocked.', 'success');
+      } catch (e) {}
+      showToast(`Welcome back, ${userObj.name}! CRM Dashboard unlocked.`, 'success');
       navigate('/admin');
       return { success: true };
-    } else {
-      return {
-        success: false,
-        error: 'Invalid username or password. Please use correct credentials.'
-      };
     }
+
+    return {
+      success: false,
+      error: 'Invalid username or password. Please use correct credentials.'
+    };
   };
 
   // Admin Logout
@@ -170,6 +205,18 @@ export function AppProvider({ children }) {
   const [feedback, setFeedback] = useState([]);
   const [staff, setStaff] = useState(INITIAL_STAFF);
   const [currentStaff, setCurrentStaff] = useState(INITIAL_STAFF[0] || { name: 'Admin', role: 'Super Admin' });
+  const [adminProfile, setAdminProfile] = useState({
+    id: 'admin-primary',
+    username: 'sk@admin',
+    password: 'sk@admin28',
+    name: 'Mr. S. Karthikeyan',
+    role: 'Super Admin',
+    email: 'admin@sktours.com',
+    phone: '+91 99946 44744',
+    avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=200&q=80',
+    branch: 'Salem HQ (Fairlands)',
+    bio: 'Managing luxury travel itineraries and operations at SK Tours & Travels Salem.'
+  });
   const [notifications, setNotifications] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -193,14 +240,15 @@ export function AppProvider({ children }) {
         setDbStatus('offline');
       }
 
-      const [toursRes, destRes, leadsRes, custRes, fbRes, staffRes, notifRes] = await Promise.all([
+      const [toursRes, destRes, leadsRes, custRes, fbRes, staffRes, notifRes, adminProfileRes] = await Promise.all([
         fetch('/api/tours').catch(() => null),
         fetch('/api/destinations').catch(() => null),
         fetch('/api/leads').catch(() => null),
         fetch('/api/customers').catch(() => null),
         fetch('/api/feedback').catch(() => null),
         fetch('/api/staff').catch(() => null),
-        fetch('/api/notifications').catch(() => null)
+        fetch('/api/notifications').catch(() => null),
+        fetch('/api/admin/profile').catch(() => null)
       ]);
 
       if (toursRes && toursRes.ok) {
@@ -228,6 +276,13 @@ export function AppProvider({ children }) {
         if (data.length > 0) {
           setStaff(data);
           setCurrentStaff(data[0]);
+        }
+      }
+      if (adminProfileRes && adminProfileRes.ok) {
+        const adminData = await adminProfileRes.json();
+        if (adminData) {
+          setAdminProfile(adminData);
+          setCurrentStaff(prev => ({ ...prev, ...adminData }));
         }
       }
       if (notifRes && notifRes.ok) {
@@ -825,29 +880,50 @@ export function AppProvider({ children }) {
     showToast("Review deleted", "info");
   };
 
-  // Update Staff / Admin Profile
-  const updateStaffProfile = async (updatedStaff) => {
-    const { _id, ...cleanStaff } = updatedStaff;
-    setStaff(prev => prev.map(s => s.id === cleanStaff.id ? { ...s, ...cleanStaff } : s));
-    if (currentStaff && currentStaff.id === cleanStaff.id) {
-      setCurrentStaff(prev => ({ ...prev, ...cleanStaff }));
+  // Update Admin Profile & Credentials in MongoDB Atlas
+  const updateAdminProfile = async (updatedData) => {
+    const { _id, ...cleanData } = updatedData;
+    const profileId = cleanData.id || 'admin-primary';
+    setAdminProfile(prev => ({ ...prev, ...cleanData }));
+
+    // Sync with currentStaff & adminUser
+    setCurrentStaff(prev => ({
+      ...prev,
+      name: cleanData.name || prev.name,
+      role: cleanData.role || prev.role,
+      avatar: cleanData.avatar || prev.avatar,
+      email: cleanData.email || prev.email,
+      phone: cleanData.phone || prev.phone,
+      branch: cleanData.branch || prev.branch,
+      bio: cleanData.bio || prev.bio
+    }));
+
+    if (adminUser) {
+      setAdminUser(prev => ({
+        ...prev,
+        name: cleanData.name || prev.name,
+        role: cleanData.role || prev.role,
+        username: cleanData.username || prev.username
+      }));
     }
 
     try {
-      const res = await fetch(`/api/staff/${cleanStaff.id}`, {
+      const res = await fetch(`/api/admin/profile/${profileId}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(cleanStaff)
+        body: JSON.stringify(cleanData)
       });
       if (res.ok) {
-        showToast("Admin profile updated successfully!");
-        return true;
+        const saved = await res.json();
+        setAdminProfile(saved);
+        showToast("Admin profile & credentials updated in MongoDB Atlas!");
+        return saved;
       }
     } catch (err) {
-      console.error('Failed to update staff profile:', err);
+      console.error('Failed to update admin profile in MongoDB Atlas:', err);
       showToast("Profile saved locally, connection error to database", "warning");
     }
-    return true;
+    return cleanData;
   };
 
   // Upload Image to MongoDB Atlas / Server
@@ -937,6 +1013,8 @@ export function AppProvider({ children }) {
         toggleFeatureFeedback,
         getWhatsAppLink,
         updateStaffProfile,
+        adminProfile,
+        updateAdminProfile,
         uploadImage,
         dbStatus,
         fetchAllData,
