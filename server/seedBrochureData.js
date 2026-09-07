@@ -43,8 +43,7 @@ async function seed() {
   console.log(`✓ Successfully updated ${STORE_PATH} with all ${INITIAL_TOURS.length} tours and ${INITIAL_DESTINATIONS.length} destinations.`);
 
   // 2. Try syncing to MongoDB Atlas if reachable
-  const mongoUri = process.env.MONGODB_URI || 'mongodb://sktoursandtravelsalem_db_user:ZY4kxkYCKWabzQPR@ac-nrqqyke-shard-00-00.jmznisf.mongodb.net:27017,ac-nrqqyke-shard-00-01.jmznisf.mongodb.net:27017,ac-nrqqyke-shard-00-02.jmznisf.mongodb.net:27017/sk_tours?ssl=true&authSource=admin&replicaSet=atlas-vo81m1-shard-0&retryWrites=true&w=majority';
-  
+  const mongoUri = process.env.MONGODB_URI || process.env.MONGODB_SRV_URI || '';
   try {
     console.log('Connecting to MongoDB Atlas to seed live collections...');
     await mongoose.connect(mongoUri, { serverSelectionTimeoutMS: 6000 });

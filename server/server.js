@@ -84,8 +84,11 @@ function saveLocalStore() {
 }
 
 // MongoDB Atlas Connection
-const primaryUri = process.env.MONGODB_URI || 'mongodb://sktoursandtravelsalem_db_user:ZY4kxkYCKWabzQPR@ac-nrqqyke-shard-00-00.jmznisf.mongodb.net:27017,ac-nrqqyke-shard-00-01.jmznisf.mongodb.net:27017,ac-nrqqyke-shard-00-02.jmznisf.mongodb.net:27017/sk_tours?ssl=true&authSource=admin&replicaSet=atlas-vo81m1-shard-0&retryWrites=true&w=majority';
-const fallbackUri = process.env.MONGODB_SRV_URI || 'mongodb+srv://sktoursandtravelsalem_db_user:ZY4kxkYCKWabzQPR@sktours.jmznisf.mongodb.net/sk_tours?retryWrites=true&w=majority&appName=sktours';
+const primaryUri = process.env.MONGODB_URI || process.env.MONGODB_SRV_URI || '';
+
+if (!primaryUri) {
+  console.warn("WARNING: MONGODB_URI is not set in environment variables!");
+}
 
 let isConnected = false;
 let connectionError = null;
